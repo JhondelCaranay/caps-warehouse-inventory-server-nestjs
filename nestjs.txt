@@ -1,0 +1,193 @@
+https://docs.nestjs.com/cli/usages#cli-command-reference // cli command reference
+
+install cli for nest js
+    $ npm i -g @nestjs/cli      // install nestjs cli globally
+
+create project 
+    $ nest new nestjs-api-basic
+
+clean boiler plate
+    delate all file in src exept main.ts and app.module
+
+run project
+    npm run start:dev
+
+NEST JS CLI
+$ nest g --help
+Usage: nest generate|g [options] <schematic> [name] [path]
+
+Generate a Nest element.
+  Schematics available on @nestjs/schematics collection:
+    ┌───────────────┬─────────────┬──────────────────────────────────────────────┐
+    │ name          │ alias       │ description                                  │
+    │ application   │ application │ Generate a new application workspace         │
+    │ class         │ cl          │ Generate a new class                         │
+    │ configuration │ config      │ Generate a CLI configuration file            │
+    │ controller    │ co          │ Generate a controller declaration            │
+    │ decorator     │ d           │ Generate a custom decorator                  │
+    │ filter        │ f           │ Generate a filter declaration                │
+    │ gateway       │ ga          │ Generate a gateway declaration               │
+    │ guard         │ gu          │ Generate a guard declaration                 │
+    │ interceptor   │ itc         │ Generate an interceptor declaration          │
+    │ interface     │ itf         │ Generate an interface                        │
+    │ middleware    │ mi          │ Generate a middleware declaration            │
+    │ module        │ mo          │ Generate a module declaration                │
+    │ pipe          │ pi          │ Generate a pipe declaration                  │
+    │ provider      │ pr          │ Generate a provider declaration              │
+    │ resolver      │ r           │ Generate a GraphQL resolver declaration      │
+    │ service       │ s           │ Generate a service declaration               │
+    │ library       │ lib         │ Generate a new library within a monorepo     │
+    │ sub-app       │ app         │ Generate a new application within a monorepo │
+    │ resource      │ res         │ Generate a new CRUD resource                 │
+    └───────────────┴─────────────┴──────────────────────────────────────────────┘
+
+Options:
+  -d, --dry-run                      Report actions that would be taken without writing out results.
+  -p, --project [project]            Project in which to generate files.
+  --flat                             Enforce flat structure of generated element.
+  --no-flat                          Enforce that directories are generated.
+  --spec                             Enforce spec files generation. (default: true)
+  --skip-import                      Skip importing (default: false)
+  --no-spec                          Disable spec files generation.
+  -c, --collection [collectionName]  Schematics collection to use.
+  -h, --help                         Output usage information.
+
+For quickly creating a CRUD controller with the validation built-in, you may use the CLI's CRUD generator: nest g resource [name].
+
+SCAFOLD GENERATE
+    make module
+        nest g module user
+    make service
+        nest g service prisma --no-spec                 // remove the test file --no-spec
+    make controller 
+        nest g controller user --no-spec 
+
+
+
+INTEGRATE PRISMA
+    npm install prisma --save-dev  / npm i -D prisma
+    npm install @prisma/client
+
+    INITIALIZE PRISMA 
+        $ npx prisma init
+
+    npx prisma --help
+
+    INITIAL MIGRATION OR MAKE MIGRATION
+        $ npx prisma migrate dev    // when running prisma migrate dev , prisma also npx prisma generate
+    
+    CREATE TYPESCRIPT TYPE SCHEMA 
+        $ npx prisma generate           // example import { User} from @prisma/client
+
+    RESET DATABASE 
+        $ prisma migrate reset
+
+        
+    PRISMA DEVTOOL STUDIO
+        npx prisma studio
+
+    CREATE NEST JS PRISMA MODULE
+        nest g module prisma
+        nest g service prisma --no-spec
+
+        npx prisma migrate --help
+        npx prisma migrate deploy
+
+    PRISMA RENAMING FIELD
+        npx prisma migrate dev --create-only
+        npx prisma migrate dev
+        https://www.prisma.io/docs/guides/database/developing-with-prisma-migrate/customizing-migrations#renaming-a-field
+
+    PRISMA CLI reference
+        https://www.prisma.io/docs/reference/api-reference/command-reference
+
+
+
+
+NEST JS VALIDATION
+    DTO - data transfer object
+
+PIPES use for vallidting 
+    USING BUILT IN VALIDATION PIPE
+        $ npm i class-validator class-transformer
+        in main.ts add app.useGlobalPipes(new ValidationPipe());
+
+PASSWORD HASHING
+    https://www.npmjs.com/package/argon2
+    npm i argon2
+
+CONFIG MODULE, NEST JS config
+    npm i @nestjs/config
+
+
+AUTH TOKENS --- NEST js has its own Library for jwt token
+    $ npm i @nestjs/passport passport   -- use to sign and decode token
+    $ npm i @nestjs/jwt passport-jwt
+    $ npm i -D @types/passport-jwt
+
+    check auth folder
+        make access token
+
+    Verify token using STRATEGY
+        check auth/strategy
+
+    after that you can now protech route
+        @UseGuards()
+
+
+CUSTOM DECORATOR
+    check auth/decorator
+
+
+
+MOTHER FUCKING TESTING
+    use pactum
+    npm i -D pactum
+
+    clear app.e2e-spec.ts
+        describe('App e2e', () => {
+            it.todo('should return "Hello World!"');
+        });
+
+    run test
+        npm run test:e2e
+
+    add to script --watch --no-cache
+
+    npm i -D dotenv-cli 
+    // add to test run script
+    dotenv -e .env.test --
+
+    "test:e2e": "dotenv -e .env.test -- jest --watch --no-cache --config ./test/jest-e2e.json",
+    "test:migrate": "dotenv -e .env.test -- npx prisma migrate dev"
+    "test:studio": "dotenv -e .env.test -- npx prisma studio"
+    https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files
+
+    pretest:e2e -- it means this will run before test:e2e
+
+@Injectable() // this requires when we use dependency injection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  "scripts": {
+    "prisma:dev:deploy": "prisma migrate deploy",
+    "db:dev:rm": "docker compose rm dev-db -s -f -v",
+    "db:dev:up": "docker compose up dev-db -d",
+    "db:dev:restart": "yarn db:dev:rm && yarn db:dev:up && sleep 1 && yarn prisma:dev:deploy",
+    "prisma:test:deploy": "dotenv -e .env.test -- prisma migrate deploy",
+    "db:test:rm": "docker compose rm test-db -s -f -v",
+    "db:test:up": "docker compose up test-db -d",
+    "db:test:restart": "yarn db:test:rm && yarn db:test:up && sleep 1 && yarn prisma:test:deploy",

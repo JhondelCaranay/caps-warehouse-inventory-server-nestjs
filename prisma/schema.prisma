@@ -1,0 +1,163 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ROLE {
+  USER
+  SUPER_ADMIN
+  ADMIN
+  WAREHOUSE_MANAGER
+  ENGINEER
+}
+
+enum STATUS {
+  ACTIVE
+  INACTIVE
+}
+
+enum STOCK {
+  IN_STOCK
+  OUT_OF_STOCK
+}
+
+enum ACTION {
+  HOLD
+  DISPATCH
+  RECEIVE
+  RETURN
+  CANCEL
+}
+
+// value lowercase
+enum UNIT {
+  UNIT
+  PCS
+  SETS
+  ROLL
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email  String  @unique
+  hash   String
+  hashRT String?
+  status STATUS  @default(ACTIVE)
+  role   ROLE    @default(USER)
+
+  // relations
+  Profile     Profile?
+  Transaction Transaction[]
+
+  @@map("users")
+}
+
+model Profile {
+  id String @id @default(uuid())
+
+  first_name String
+  last_name  String
+  position   String
+  address    String?
+  contact    String
+
+  // relations
+  User   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("profiles")
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  quantity Int
+  action   ACTION  @default(HOLD)
+  remarks  String?
+
+  // relations
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
+  Item      Item?    @relation(fields: [itemId], references: [id])
+  itemId    String?
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+
+  @@map("transactions")
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name    String
+  address String
+
+  // relations
+  Transaction Transaction[]
+
+  @@map("projects")
+}
+
+model Item {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String?
+  model       String
+  unit        UNIT    @default(UNIT)
+  stock       STOCK   @default(IN_STOCK)
+  price       Float
+  pictureUrl  String?
+
+  // relations
+  Transaction Transaction[]
+
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  Brand      Brand?    @relation(fields: [brandId], references: [id])
+  brandId    String?
+
+  @@map("items")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  // relations
+  Item Item[]
+
+  @@map("categories")
+}
+
+model Brand {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  // relations
+  Item Item[]
+
+  @@map("brands")
+}
