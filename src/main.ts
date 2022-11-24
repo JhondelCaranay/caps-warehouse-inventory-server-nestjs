@@ -2,14 +2,23 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT) || 3001;
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     // const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     app.setGlobalPrefix("api");
-    app.useGlobalPipes(new ValidationPipe());
+
+    app.enableCors();
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            transform: true,
+        }),
+    );
 
     // GLOBAL reflector AtGuard  // IF MODULE LEVEL USE APP_GUARD - app module automatically inject reflector
     // const reflector = new Reflector();

@@ -52,7 +52,8 @@ Options:
   -c, --collection [collectionName]  Schematics collection to use.
   -h, --help                         Output usage information.
 
-For quickly creating a CRUD controller with the validation built-in, you may use the CLI's CRUD generator: nest g resource [name].
+For quickly creating a CRUD controller with the validation built-in, you may use the CLI's CRUD generator:
+    > nest g resource [name].
 
 SCAFOLD GENERATE
     make module

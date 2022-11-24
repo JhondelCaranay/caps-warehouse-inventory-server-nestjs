@@ -117,7 +117,7 @@ model Item {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name        String
+  name        String  @unique
   description String?
   model       String
   unit        UNIT    @default(UNIT)
@@ -141,7 +141,7 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name String
+  name String @unique
 
   // relations
   Item Item[]
@@ -154,7 +154,7 @@ model Brand {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name String
+  name String @unique
 
   // relations
   Item Item[]
