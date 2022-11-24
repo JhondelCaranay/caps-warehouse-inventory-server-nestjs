@@ -1,5 +1,5 @@
 import { PrismaService } from "./../prisma/prisma.service";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateProjectDto, UpdateProjectDto } from "./dto";
 
 @Injectable()
@@ -16,6 +16,8 @@ export class ProjectService {
         if (duplicate) {
             throw new BadRequestException(`${dto.name} already exists`);
         }
+
+        // check if category id is valid
 
         const newProject = await this.prisma.project.create({
             data: {
@@ -45,13 +47,15 @@ export class ProjectService {
         });
 
         if (!project) {
-            throw new BadRequestException(`Project not found!`);
+            throw new NotFoundException(`Project not found!`);
         }
 
         return project;
     }
 
     async update(id: string, dto: UpdateProjectDto) {
+        await this.findOne(id); // check if category exists , throw a 404 error if not
+
         const project = await this.prisma.project.update({
             where: {
                 id: id,
@@ -66,6 +70,8 @@ export class ProjectService {
     }
 
     async remove(id: string) {
+        await this.findOne(id); // check if category exists , throw a 404 error if not
+
         const project = await this.prisma.project.delete({
             where: {
                 id: id,

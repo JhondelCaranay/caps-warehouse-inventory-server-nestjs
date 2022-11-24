@@ -1,5 +1,5 @@
 import { PrismaService } from "./../prisma/prisma.service";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateBrandDto, UpdateBrandDto } from "./dto";
 
 @Injectable()
@@ -45,14 +45,14 @@ export class BrandService {
             },
         });
 
-        if (!brand) {
-            throw new BadRequestException(`Brand not found!`);
-        }
+        if (!brand) throw new NotFoundException(`Brand id not found!`);
 
         return brand;
     }
 
     async update(id: string, dto: UpdateBrandDto) {
+        await this.findOne(id); // check if category exists , throw a 404 error if not
+
         const brand = await this.prisma.brand.update({
             where: {
                 id: id,
@@ -66,6 +66,8 @@ export class BrandService {
     }
 
     async remove(id: string) {
+        await this.findOne(id); // check if category exists , throw a 404 error if not
+
         const brand = await this.prisma.brand.delete({
             where: {
                 id: id,

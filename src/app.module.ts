@@ -9,9 +9,10 @@ import { AtGuard } from "./common/guards";
 import { CategoryModule } from "./category/category.module";
 import { BrandModule } from "./brand/brand.module";
 import { ProjectModule } from "./project/project.module";
+import { ItemModule } from "./item/item.module";
 
 @Module({
-    imports: [PrismaModule, AuthModule, UserModule, CategoryModule, BrandModule, ProjectModule],
+    imports: [PrismaModule, AuthModule, UserModule, CategoryModule, BrandModule, ProjectModule, ItemModule],
     controllers: [AppController],
     providers: [
         AppService,

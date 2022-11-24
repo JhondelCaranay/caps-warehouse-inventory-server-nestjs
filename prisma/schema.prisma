@@ -39,8 +39,8 @@ enum ACTION {
 // value lowercase
 enum UNIT {
   UNIT
-  PCS
-  SETS
+  PC
+  SET
   ROLL
 }
 
@@ -65,9 +65,9 @@ model User {
 model Profile {
   id String @id @default(uuid())
 
-  first_name String
-  last_name  String
-  position   String
+  first_name String?
+  last_name  String?
+  position   String?
   address    String?
   contact    String?
   avatarUrl  String?

@@ -24,9 +24,6 @@ export class AuthService {
         await this.prisma.profile.create({
             data: {
                 userId: newUser.id,
-                position: undefined,
-                first_name: undefined,
-                last_name: undefined,
             },
         });
 
