@@ -1,15 +1,16 @@
 import { PrismaService } from "./../prisma/prisma.service";
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { CreateCategoryDto, UpdateCategoryDto } from "./dto";
+import { CreateBrandDto, UpdateBrandDto } from "./dto";
 
 @Injectable()
-export class CategoryService {
+export class BrandService {
     constructor(private prisma: PrismaService) {}
 
-    async create(dto: CreateCategoryDto) {
-        const duplicate = await this.prisma.category.findUnique({
+    async create(dto: CreateBrandDto) {
+        // check if brand exists
+        const duplicate = await this.prisma.brand.findUnique({
             where: {
-                name: dto.name.toLocaleLowerCase(),
+                name: dto.name,
             },
         });
 
@@ -17,40 +18,42 @@ export class CategoryService {
             throw new BadRequestException(`${dto.name} already exists`);
         }
 
-        const newCategory = await this.prisma.category.create({
+        const newBrand = await this.prisma.brand.create({
             data: {
                 name: dto.name.toLocaleLowerCase(),
             },
         });
 
-        return newCategory;
+        return newBrand;
     }
 
     async findAll() {
-        const categories = await this.prisma.category.findMany({
+        // sort by createdAt DESC
+        const brands = await this.prisma.brand.findMany({
             orderBy: {
                 createdAt: "desc",
             },
         });
-        return categories;
+
+        return brands;
     }
 
     async findOne(id: string) {
-        const category = await this.prisma.category.findUnique({
+        const brand = await this.prisma.brand.findUnique({
             where: {
                 id: id,
             },
         });
 
-        if (!category) {
-            throw new BadRequestException(`Category not found!`);
+        if (!brand) {
+            throw new BadRequestException(`Brand not found!`);
         }
 
-        return category;
+        return brand;
     }
 
-    async update(id: string, dto: UpdateCategoryDto) {
-        const category = await this.prisma.category.update({
+    async update(id: string, dto: UpdateBrandDto) {
+        const brand = await this.prisma.brand.update({
             where: {
                 id: id,
             },
@@ -59,16 +62,16 @@ export class CategoryService {
             },
         });
 
-        return category;
+        return brand;
     }
 
     async remove(id: string) {
-        const category = await this.prisma.category.delete({
+        const brand = await this.prisma.brand.delete({
             where: {
                 id: id,
             },
         });
 
-        return category;
+        return brand;
     }
 }
