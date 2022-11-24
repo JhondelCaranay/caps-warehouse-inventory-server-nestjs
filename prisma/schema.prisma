@@ -69,7 +69,8 @@ model Profile {
   last_name  String
   position   String
   address    String?
-  contact    String
+  contact    String?
+  avatarUrl  String?
 
   // relations
   User   User   @relation(fields: [userId], references: [id])

@@ -8,9 +8,10 @@ import { APP_GUARD } from "@nestjs/core";
 import { AtGuard } from "./common/guards";
 import { CategoryModule } from "./category/category.module";
 import { BrandModule } from "./brand/brand.module";
+import { ProjectModule } from "./project/project.module";
 
 @Module({
-    imports: [PrismaModule, AuthModule, UserModule, CategoryModule, BrandModule],
+    imports: [PrismaModule, AuthModule, UserModule, CategoryModule, BrandModule, ProjectModule],
     controllers: [AppController],
     providers: [
         AppService,

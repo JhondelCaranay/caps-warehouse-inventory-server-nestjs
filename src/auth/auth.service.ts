@@ -21,6 +21,15 @@ export class AuthService {
             },
         });
 
+        await this.prisma.profile.create({
+            data: {
+                userId: newUser.id,
+                position: undefined,
+                first_name: undefined,
+                last_name: undefined,
+            },
+        });
+
         // generate access token and refresh token
         const access_token = this.getAccessToken(newUser.id, newUser.email);
         const refresh_token = this.getRefreshToken(newUser.id, newUser.email);
