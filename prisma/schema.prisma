@@ -21,6 +21,7 @@ enum ROLE {
 enum STATUS {
   ACTIVE
   INACTIVE
+  DEACTIVATED
 }
 
 enum STOCK {
@@ -39,8 +40,8 @@ enum ACTION {
 // value lowercase
 enum UNIT {
   UNIT
-  PC
-  SET
+  PCS
+  SETS
   ROLL
 }
 
@@ -56,8 +57,10 @@ model User {
   role   ROLE    @default(USER)
 
   // relations
-  Profile     Profile?
   Transaction Transaction[]
+
+  Profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String  @unique
 
   @@map("users")
 }
@@ -65,16 +68,15 @@ model User {
 model Profile {
   id String @id @default(uuid())
 
-  first_name String?
-  last_name  String?
+  first_name String
+  last_name  String
   position   String?
   address    String?
   contact    String?
   avatarUrl  String?
 
   // relations
-  User   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  User User?
 
   @@map("profiles")
 }
