@@ -23,15 +23,15 @@ export class ItemService {
         if (duplicate) throw new BadRequestException(`${dto.name} already exists`);
 
         // check if category id is valid
-        await this.categoryService.findOne(dto.categoryId); //  throw a 404 error if not
+        await this.categoryService.findOne(dto.categoryId); //  throw a 404 error if not found
 
         // check if brand id is valid
-        await this.brandService.findOne(dto.brandId); // throw a 404 error if not
+        await this.brandService.findOne(dto.brandId); // throw a 404 error if not found
 
         const newItem = await this.prisma.item.create({
             data: {
                 name: dto.name,
-                description: dto.description || undefined,
+                description: dto.description?.toLowerCase() || undefined,
                 model: dto.model,
                 unit: dto.unit,
                 stock: dto.stock,
@@ -66,6 +66,7 @@ export class ItemService {
     }
 
     async findOne(id: string) {
+        // check if item exists , throw a 404 error if not found
         const item = await this.prisma.item.findUnique({
             where: {
                 id: id,
@@ -78,13 +79,13 @@ export class ItemService {
     }
 
     async update(id: string, dto: UpdateItemDto) {
-        await this.findOne(id); // check if item exists , throw a 404 error if not
+        await this.findOne(id); // check if item exists , throw a 404 error if not found
 
         // check if category id is valid
-        if (dto.categoryId) await this.categoryService.findOne(dto.categoryId); //  throw a 404 error if not
+        if (dto.categoryId) await this.categoryService.findOne(dto.categoryId); //  throw a 404 error if not found
 
         // check if brand id is
-        if (dto.brandId) await this.brandService.findOne(dto.brandId); // throw a 404 error if not
+        if (dto.brandId) await this.brandService.findOne(dto.brandId); // throw a 404 error if not found
 
         const item = await this.prisma.item.update({
             where: {
@@ -92,7 +93,7 @@ export class ItemService {
             },
             data: {
                 name: dto.name || undefined,
-                description: dto.description || undefined,
+                description: dto.description?.toLowerCase() || undefined,
                 model: dto.model || undefined,
                 unit: dto.unit || undefined,
                 stock: dto.stock || undefined,
@@ -117,7 +118,7 @@ export class ItemService {
     }
 
     async remove(id: string) {
-        await this.findOne(id); // check if item exists , throw a 404 error if not
+        await this.findOne(id); // check if item exists , throw a 404 error if not found
 
         const item = await this.prisma.item.delete({
             where: {

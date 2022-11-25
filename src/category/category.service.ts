@@ -12,10 +12,7 @@ export class CategoryService {
                 name: dto.name.toLocaleLowerCase(),
             },
         });
-
-        if (duplicate) {
-            throw new BadRequestException(`${dto.name} already exists`);
-        }
+        if (duplicate) throw new BadRequestException(`${dto.name} already exists`);
 
         const newCategory = await this.prisma.category.create({
             data: {
@@ -36,6 +33,7 @@ export class CategoryService {
     }
 
     async findOne(id: string) {
+        // check if category exists, throw a 404 error if not found
         const category = await this.prisma.category.findUnique({
             where: {
                 id: id,
@@ -48,7 +46,7 @@ export class CategoryService {
     }
 
     async update(id: string, dto: UpdateCategoryDto) {
-        await this.findOne(id); // check if category exists , throw a 404 error if not
+        await this.findOne(id); // check if category exists , throw a 404 error if not found
 
         const category = await this.prisma.category.update({
             where: {
@@ -63,7 +61,7 @@ export class CategoryService {
     }
 
     async remove(id: string) {
-        await this.findOne(id);
+        await this.findOne(id); // check if category exists , throw a 404 error if not found
 
         const category = await this.prisma.category.delete({
             where: {

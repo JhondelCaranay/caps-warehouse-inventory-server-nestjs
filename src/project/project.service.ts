@@ -7,17 +7,14 @@ export class ProjectService {
     constructor(private prisma: PrismaService) {}
 
     async create(dto: CreateProjectDto) {
+        // check for duplicate category
         const duplicate = await this.prisma.project.findFirst({
             where: {
                 name: dto.name,
             },
         });
 
-        if (duplicate) {
-            throw new BadRequestException(`${dto.name} already exists`);
-        }
-
-        // check if category id is valid
+        if (duplicate) throw new BadRequestException(`${dto.name} already exists`);
 
         const newProject = await this.prisma.project.create({
             data: {
@@ -40,6 +37,7 @@ export class ProjectService {
     }
 
     async findOne(id: string) {
+        // check if category exists, throw a 404 error if not found
         const project = await this.prisma.project.findUnique({
             where: {
                 id: id,
@@ -54,7 +52,7 @@ export class ProjectService {
     }
 
     async update(id: string, dto: UpdateProjectDto) {
-        await this.findOne(id); // check if category exists , throw a 404 error if not
+        await this.findOne(id); // check if category exists , throw a 404 error if not found
 
         const project = await this.prisma.project.update({
             where: {
@@ -70,7 +68,7 @@ export class ProjectService {
     }
 
     async remove(id: string) {
-        await this.findOne(id); // check if category exists , throw a 404 error if not
+        await this.findOne(id); // check if category exists , throw a 404 error if not found
 
         const project = await this.prisma.project.delete({
             where: {
