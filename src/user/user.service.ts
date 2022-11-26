@@ -26,6 +26,9 @@ export class UserService {
                 first_name: dto.first_name.toLowerCase(),
                 last_name: dto.last_name.toLowerCase(),
                 position: dto.position,
+                address: dto.address || undefined,
+                contact: dto.contact || undefined,
+                avatarUrl: dto.avatarUrl || undefined,
             },
         });
 
@@ -43,7 +46,17 @@ export class UserService {
                 email: true,
                 status: true,
                 role: true,
-                profileId: true,
+                Profile: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        position: true,
+                        address: true,
+                        contact: true,
+                        avatarUrl: true,
+                    },
+                },
             },
         });
 
@@ -61,7 +74,17 @@ export class UserService {
                 email: true,
                 status: true,
                 role: true,
-                profileId: true,
+                Profile: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        position: true,
+                        address: true,
+                        contact: true,
+                        avatarUrl: true,
+                    },
+                },
             },
         });
         return users;
@@ -80,7 +103,17 @@ export class UserService {
                 email: true,
                 status: true,
                 role: true,
-                profileId: true,
+                Profile: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        position: true,
+                        address: true,
+                        contact: true,
+                        avatarUrl: true,
+                    },
+                },
             },
         });
 
@@ -100,6 +133,16 @@ export class UserService {
             data: {
                 role: dto.role || undefined,
                 status: dto.status || undefined,
+                Profile: {
+                    update: {
+                        first_name: dto.first_name || undefined,
+                        last_name: dto.last_name || undefined,
+                        position: dto.position || undefined,
+                        address: dto.address || undefined,
+                        contact: dto.contact || undefined,
+                        avatarUrl: dto.avatarUrl || undefined,
+                    },
+                },
             },
             select: {
                 id: true,
@@ -108,7 +151,17 @@ export class UserService {
                 email: true,
                 status: true,
                 role: true,
-                profileId: true,
+                Profile: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        position: true,
+                        address: true,
+                        contact: true,
+                        avatarUrl: true,
+                    },
+                },
             },
         });
 

@@ -8,5 +8,6 @@ import { ItemController } from "./item.controller";
     controllers: [ItemController],
     providers: [ItemService],
     imports: [BrandModule, CategoryModule],
+    exports: [ItemService],
 })
 export class ItemModule {}
