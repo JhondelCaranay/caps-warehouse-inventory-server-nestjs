@@ -73,7 +73,7 @@ export class ItemService {
             },
         });
 
-        if (!item) throw new NotFoundException(`Item not found!`);
+        if (!item) throw new NotFoundException(`Item id not found!`);
 
         return item;
     }
