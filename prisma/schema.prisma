@@ -14,7 +14,7 @@ enum ROLE {
   USER
   SUPER_ADMIN
   ADMIN
-  WAREHOUSE_MANAGER
+  WAREHOUSE_CONTROLLER
   ENGINEER
 }
 
@@ -24,17 +24,12 @@ enum STATUS {
   DEACTIVATED
 }
 
-enum STOCK {
-  IN_STOCK
-  OUT_OF_STOCK
-}
-
 enum ACTION {
-  HOLD
-  DISPATCH
-  RECEIVE
-  RETURN
-  CANCEL
+  ON_PROCESS
+  ON_DELIVERY
+  CONFIRMED_RECEIVED
+  ON_RETURN
+  CONFIRMED_RETURNED
 }
 
 // value lowercase
@@ -59,8 +54,9 @@ model User {
   // relations
   Transaction Transaction[]
 
-  Profile   Profile @relation(fields: [profileId], references: [id])
-  profileId String  @unique
+  Profile   Profile   @relation(fields: [profileId], references: [id])
+  profileId String    @unique
+  Project   Project[]
 
   @@map("users")
 }
@@ -87,7 +83,7 @@ model Transaction {
   updatedAt DateTime @updatedAt
 
   quantity Int
-  action   ACTION  @default(HOLD)
+  action   ACTION  @default(ON_PROCESS)
   remarks  String?
 
   // relations
@@ -111,6 +107,8 @@ model Project {
 
   // relations
   Transaction Transaction[]
+  User        User?         @relation(fields: [userId], references: [id])
+  userId      String?
 
   @@map("projects")
 }
@@ -124,7 +122,8 @@ model Item {
   description String?
   model       String
   unit        UNIT    @default(UNIT)
-  stock       STOCK   @default(IN_STOCK)
+  // stock       STOCK   @default(OUT_OF_STOCK)
+  quantity    Int     @default(0)
   price       Float
   pictureUrl  String?
 

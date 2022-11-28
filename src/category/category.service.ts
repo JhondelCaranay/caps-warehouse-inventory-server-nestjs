@@ -9,14 +9,14 @@ export class CategoryService {
     async create(dto: CreateCategoryDto) {
         const duplicate = await this.prisma.category.findUnique({
             where: {
-                name: dto.name.toLocaleLowerCase(),
+                name: dto.name,
             },
         });
         if (duplicate) throw new BadRequestException(`${dto.name} already exists`);
 
         const newCategory = await this.prisma.category.create({
             data: {
-                name: dto.name.toLocaleLowerCase(),
+                name: dto.name,
             },
         });
 
@@ -53,7 +53,7 @@ export class CategoryService {
                 id: id,
             },
             data: {
-                name: dto.name?.toLocaleLowerCase() || undefined,
+                name: dto.name || undefined,
             },
         });
 
