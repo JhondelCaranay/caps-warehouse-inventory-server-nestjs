@@ -46,7 +46,7 @@ export class TransactionService {
                         description: true,
                         model: true,
                         unit: true,
-                        stock: true,
+                        quantity: true,
                         price: true,
                         pictureUrl: true,
                         Category: {
@@ -110,7 +110,7 @@ export class TransactionService {
                         description: true,
                         model: true,
                         unit: true,
-                        stock: true,
+                        quantity: true,
                         price: true,
                         pictureUrl: true,
                         Category: {
@@ -180,7 +180,7 @@ export class TransactionService {
                         description: true,
                         model: true,
                         unit: true,
-                        stock: true,
+                        quantity: true,
                         price: true,
                         pictureUrl: true,
                         Category: {
@@ -268,7 +268,7 @@ export class TransactionService {
                         description: true,
                         model: true,
                         unit: true,
-                        stock: true,
+                        quantity: true,
                         price: true,
                         pictureUrl: true,
                         Category: {

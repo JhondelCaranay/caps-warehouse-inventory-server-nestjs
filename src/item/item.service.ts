@@ -27,28 +27,17 @@ export class ItemService {
 
         // check if brand id is valid
         await this.brandService.findOne(dto.brandId); // throw a 404 error if not found
-
         const newItem = await this.prisma.item.create({
             data: {
                 name: dto.name,
-                description: dto.description?.toLowerCase() || undefined,
+                description: dto.description || undefined,
                 model: dto.model,
                 unit: dto.unit,
-                stock: dto.stock,
+                quantity: dto.quantity,
                 price: dto.price,
                 pictureUrl: dto.pictureUrl || undefined,
                 categoryId: dto.categoryId,
                 brandId: dto.brandId,
-                // Category: {
-                //     connect: {
-                //         id: dto.categoryId,
-                //     },
-                // },
-                // Brand: {
-                //     connect: {
-                //         id: dto.brandId,
-                //     },
-                // },
             },
         });
 
@@ -79,6 +68,7 @@ export class ItemService {
     }
 
     async update(id: string, dto: UpdateItemDto) {
+        console.log("🚀 ~ file: item.service.ts ~ line 73 ~ ItemService ~ update ~ dto", dto);
         await this.findOne(id); // check if item exists , throw a 404 error if not found
 
         // check if category id is valid
@@ -93,10 +83,10 @@ export class ItemService {
             },
             data: {
                 name: dto.name || undefined,
-                description: dto.description?.toLowerCase() || undefined,
+                description: dto.description || undefined,
                 model: dto.model || undefined,
                 unit: dto.unit || undefined,
-                stock: dto.stock || undefined,
+                quantity: dto.quantity || undefined,
                 price: dto.price || undefined,
                 pictureUrl: dto.pictureUrl || undefined,
                 categoryId: dto.categoryId || undefined,

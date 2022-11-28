@@ -1,5 +1,5 @@
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthDto } from "./dto";
+import { AuthDto, SignupDto } from "./dto";
 import { JwtService } from "@nestjs/jwt";
 import { ForbiddenException } from "@nestjs/common/exceptions";
 import { Tokens } from "./types";
@@ -10,7 +10,7 @@ import * as argon from "argon2";
 export class AuthService {
     constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
-    async signup(dto: AuthDto): Promise<Tokens> {
+    async signup(dto: SignupDto): Promise<Tokens> {
         // const hash = await this.hashData(dto.password);
         const hash = await argon.hash(dto.password);
 

@@ -1,14 +1,5 @@
-// name        String  @unique
-// description String?
-// model       String
-// unit        UNIT    @default(UNIT)
-// stock       STOCK   @default(IN_STOCK)
-// price       Float
-// pictureUrl  String?
-// categoryId String?
-
-import { STOCK, UNIT } from "@prisma/client";
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { UNIT } from "@prisma/client";
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min } from "class-validator";
 
 // brandId    String?
 export class CreateItemDto {
@@ -28,9 +19,14 @@ export class CreateItemDto {
     @IsEnum(UNIT, { message: `unit  must be one of the following: ( ${Object.values(UNIT).join(", ")} )` })
     unit: UNIT;
 
+    // @IsOptional()
+    // @IsEnum(STOCK, { message: `stock  must be one of the following: ( ${Object.values(STOCK).join(", ")} )` })
+    // stock: STOCK;
+
     @IsNotEmpty()
-    @IsEnum(STOCK, { message: `stock  must be one of the following: ( ${Object.values(STOCK).join(", ")} )` })
-    stock: STOCK;
+    @IsInt()
+    @Min(1)
+    quantity: number;
 
     @IsNotEmpty()
     @IsNumber()

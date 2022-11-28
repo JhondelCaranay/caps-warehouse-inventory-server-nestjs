@@ -18,8 +18,9 @@ export class ProjectService {
 
         const newProject = await this.prisma.project.create({
             data: {
-                name: dto.name.toLocaleLowerCase(),
+                name: dto.name,
                 address: dto.address,
+                userId: dto.userId,
             },
         });
 
@@ -59,8 +60,9 @@ export class ProjectService {
                 id: id,
             },
             data: {
-                name: dto.name?.toLocaleLowerCase() || undefined,
+                name: dto.name || undefined,
                 address: dto.address || undefined,
+                userId: dto.userId || undefined,
             },
         });
 

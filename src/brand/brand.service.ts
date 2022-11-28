@@ -18,7 +18,7 @@ export class BrandService {
         // create new brand
         const newBrand = await this.prisma.brand.create({
             data: {
-                name: dto.name.toLocaleLowerCase(),
+                name: dto.name,
             },
         });
 
@@ -55,7 +55,7 @@ export class BrandService {
                 id: id,
             },
             data: {
-                name: dto.name?.toLocaleLowerCase() || undefined,
+                name: dto.name || undefined,
             },
         });
 
