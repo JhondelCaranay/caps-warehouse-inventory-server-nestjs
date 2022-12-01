@@ -18,13 +18,14 @@ enum ROLE {
   ENGINEER
 }
 
-enum STATUS {
+enum USER_STATUS {
   ACTIVE
   INACTIVE
   DEACTIVATED
 }
 
-enum ACTION {
+enum TRANSACTION_STATUS {
+  WAITING
   ON_PROCESS
   ON_DELIVERY
   CONFIRMED_RECEIVED
@@ -45,11 +46,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email  String  @unique
+  email  String      @unique
   hash   String
   hashRT String?
-  status STATUS  @default(ACTIVE)
-  role   ROLE    @default(USER)
+  status USER_STATUS @default(ACTIVE)
+  role   ROLE        @default(USER)
 
   // relations
   Transaction Transaction[]
@@ -83,7 +84,7 @@ model Transaction {
   updatedAt DateTime @updatedAt
 
   quantity Int
-  action   ACTION  @default(ON_PROCESS)
+  status   TRANSACTION_STATUS @default(WAITING)
   remarks  String?
 
   // relations
