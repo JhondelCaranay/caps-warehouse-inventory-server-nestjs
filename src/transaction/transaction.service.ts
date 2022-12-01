@@ -28,7 +28,7 @@ export class TransactionService {
             data: {
                 quantity: dto.quantity,
                 remarks: dto.remarks || undefined,
-                action: dto.action || undefined,
+                status: dto.status || undefined,
                 userId: dto.userId,
                 itemId: dto.itemId,
                 projectId: dto.projectId,
@@ -39,6 +39,7 @@ export class TransactionService {
                 updatedAt: true,
                 quantity: true,
                 remarks: true,
+                status: true,
                 Item: {
                     select: {
                         id: true,
@@ -103,6 +104,7 @@ export class TransactionService {
                 updatedAt: true,
                 quantity: true,
                 remarks: true,
+                status: true,
                 Item: {
                     select: {
                         id: true,
@@ -173,6 +175,7 @@ export class TransactionService {
                 updatedAt: true,
                 quantity: true,
                 remarks: true,
+                status: true,
                 Item: {
                     select: {
                         id: true,
@@ -250,7 +253,7 @@ export class TransactionService {
             data: {
                 quantity: dto.quantity || undefined,
                 remarks: dto.remarks || undefined,
-                action: dto.action || undefined,
+                status: dto.status || undefined,
                 userId: dto.userId || undefined,
                 itemId: dto.itemId || undefined,
                 projectId: dto.projectId || undefined,
@@ -261,6 +264,7 @@ export class TransactionService {
                 updatedAt: true,
                 quantity: true,
                 remarks: true,
+                status: true,
                 Item: {
                     select: {
                         id: true,

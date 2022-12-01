@@ -1,4 +1,4 @@
-import { ROLE, STATUS } from "@prisma/client";
+import { ROLE, USER_STATUS } from "@prisma/client";
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, IsUrl, Matches } from "class-validator";
 
 export class CreateUserDto {
@@ -41,8 +41,10 @@ export class CreateUserDto {
     avatarUrl: string;
 
     @IsOptional()
-    @IsEnum(STATUS, { message: `status  must be one of the following: ( ${Object.values(STATUS).join(", ")} )` })
-    status: STATUS;
+    @IsEnum(USER_STATUS, {
+        message: `status  must be one of the following: ( ${Object.values(USER_STATUS).join(", ")} )`,
+    })
+    status: USER_STATUS;
 
     @IsNotEmpty()
     @IsEnum(ROLE, { message: `role  must be one of the following: ( ${Object.values(ROLE).join(", ")} )` })

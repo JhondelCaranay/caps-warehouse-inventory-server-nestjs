@@ -1,4 +1,4 @@
-import { ACTION } from "@prisma/client";
+import { TRANSACTION_STATUS } from "@prisma/client";
 import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateTransactionDto {
@@ -13,8 +13,10 @@ export class CreateTransactionDto {
 
     @IsOptional()
     @IsNotEmpty()
-    @IsEnum(ACTION, { message: `action  must be one of the following: ( ${Object.values(ACTION).join(", ")} )` })
-    action: ACTION;
+    @IsEnum(TRANSACTION_STATUS, {
+        message: `action  must be one of the following: ( ${Object.values(TRANSACTION_STATUS).join(", ")} )`,
+    })
+    status: TRANSACTION_STATUS;
 
     @IsNotEmpty()
     @IsString()
