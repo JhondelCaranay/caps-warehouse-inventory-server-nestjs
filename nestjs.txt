@@ -1,3 +1,5 @@
+
+
 https://docs.nestjs.com/cli/usages#cli-command-reference // cli command reference
 
 install cli for nest js
@@ -11,6 +13,8 @@ clean boiler plate
 
 run project
     npm run start:dev
+
+    npm run prebuild  -- refresh fist folder  - https://stackoverflow.com/questions/61306329/nestjs-error-cannot-find-module-app-controller
 
 NEST JS CLI
 $ nest g --help

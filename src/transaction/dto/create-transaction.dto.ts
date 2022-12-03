@@ -32,4 +32,21 @@ export class CreateTransactionDto {
     @IsString()
     @IsUUID()
     projectId: string;
+
+    @IsNotEmpty()
+    @IsString()
+    release_slip_num: string;
+
+    @IsNotEmpty()
+    @IsString()
+    materials_issuance_num: string;
+
+    @IsNotEmpty()
+    @IsString()
+    gate_pass_num: string;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    return_slip_num: string;
 }

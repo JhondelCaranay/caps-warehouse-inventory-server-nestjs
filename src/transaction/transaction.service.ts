@@ -32,43 +32,29 @@ export class TransactionService {
                 userId: dto.userId,
                 itemId: dto.itemId,
                 projectId: dto.projectId,
+                release_slip_num: dto.release_slip_num,
+                materials_issuance_num: dto.materials_issuance_num,
+                gate_pass_num: dto.gate_pass_num,
+                return_slip_num: dto.return_slip_num || undefined,
             },
-            select: {
-                id: true,
-                createdAt: true,
-                updatedAt: true,
-                quantity: true,
-                remarks: true,
-                status: true,
+            include: {
                 Item: {
-                    select: {
-                        id: true,
-                        name: true,
-                        description: true,
-                        model: true,
-                        unit: true,
-                        quantity: true,
-                        price: true,
-                        pictureUrl: true,
-                        Category: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
-                        Brand: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
+                    include: {
+                        Category: true,
+                        Brand: true,
                     },
                 },
                 Project: {
-                    select: {
-                        id: true,
-                        name: true,
-                        address: true,
+                    include: {
+                        User: {
+                            select: {
+                                id: true,
+                                email: true,
+                                role: true,
+                                status: true,
+                                Profile: true,
+                            },
+                        },
                     },
                 },
                 User: {
@@ -77,16 +63,7 @@ export class TransactionService {
                         email: true,
                         role: true,
                         status: true,
-                        Profile: {
-                            select: {
-                                first_name: true,
-                                last_name: true,
-                                position: true,
-                                address: true,
-                                contact: true,
-                                avatarUrl: true,
-                            },
-                        },
+                        Profile: true,
                     },
                 },
             },
@@ -98,42 +75,24 @@ export class TransactionService {
     async findAll() {
         // order by createdAt DESC
         const transactions = await this.prisma.transaction.findMany({
-            select: {
-                id: true,
-                createdAt: true,
-                updatedAt: true,
-                quantity: true,
-                remarks: true,
-                status: true,
+            include: {
                 Item: {
-                    select: {
-                        id: true,
-                        name: true,
-                        description: true,
-                        model: true,
-                        unit: true,
-                        quantity: true,
-                        price: true,
-                        pictureUrl: true,
-                        Category: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
-                        Brand: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
+                    include: {
+                        Category: true,
+                        Brand: true,
                     },
                 },
                 Project: {
-                    select: {
-                        id: true,
-                        name: true,
-                        address: true,
+                    include: {
+                        User: {
+                            select: {
+                                id: true,
+                                email: true,
+                                role: true,
+                                status: true,
+                                Profile: true,
+                            },
+                        },
                     },
                 },
                 User: {
@@ -142,16 +101,7 @@ export class TransactionService {
                         email: true,
                         role: true,
                         status: true,
-                        Profile: {
-                            select: {
-                                first_name: true,
-                                last_name: true,
-                                position: true,
-                                address: true,
-                                contact: true,
-                                avatarUrl: true,
-                            },
-                        },
+                        Profile: true,
                     },
                 },
             },
@@ -169,42 +119,24 @@ export class TransactionService {
             where: {
                 id: id,
             },
-            select: {
-                id: true,
-                createdAt: true,
-                updatedAt: true,
-                quantity: true,
-                remarks: true,
-                status: true,
+            include: {
                 Item: {
-                    select: {
-                        id: true,
-                        name: true,
-                        description: true,
-                        model: true,
-                        unit: true,
-                        quantity: true,
-                        price: true,
-                        pictureUrl: true,
-                        Category: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
-                        Brand: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
+                    include: {
+                        Category: true,
+                        Brand: true,
                     },
                 },
                 Project: {
-                    select: {
-                        id: true,
-                        name: true,
-                        address: true,
+                    include: {
+                        User: {
+                            select: {
+                                id: true,
+                                email: true,
+                                role: true,
+                                status: true,
+                                Profile: true,
+                            },
+                        },
                     },
                 },
                 User: {
@@ -213,16 +145,7 @@ export class TransactionService {
                         email: true,
                         role: true,
                         status: true,
-                        Profile: {
-                            select: {
-                                first_name: true,
-                                last_name: true,
-                                position: true,
-                                address: true,
-                                contact: true,
-                                avatarUrl: true,
-                            },
-                        },
+                        Profile: true,
                     },
                 },
             },
@@ -257,43 +180,29 @@ export class TransactionService {
                 userId: dto.userId || undefined,
                 itemId: dto.itemId || undefined,
                 projectId: dto.projectId || undefined,
+                return_slip_num: dto.return_slip_num || undefined,
+                gate_pass_num: dto.gate_pass_num || undefined,
+                materials_issuance_num: dto.materials_issuance_num || undefined,
+                release_slip_num: dto.release_slip_num || undefined,
             },
-            select: {
-                id: true,
-                createdAt: true,
-                updatedAt: true,
-                quantity: true,
-                remarks: true,
-                status: true,
+            include: {
                 Item: {
-                    select: {
-                        id: true,
-                        name: true,
-                        description: true,
-                        model: true,
-                        unit: true,
-                        quantity: true,
-                        price: true,
-                        pictureUrl: true,
-                        Category: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
-                        Brand: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
+                    include: {
+                        Category: true,
+                        Brand: true,
                     },
                 },
                 Project: {
-                    select: {
-                        id: true,
-                        name: true,
-                        address: true,
+                    include: {
+                        User: {
+                            select: {
+                                id: true,
+                                email: true,
+                                role: true,
+                                status: true,
+                                Profile: true,
+                            },
+                        },
                     },
                 },
                 User: {
@@ -302,16 +211,7 @@ export class TransactionService {
                         email: true,
                         role: true,
                         status: true,
-                        Profile: {
-                            select: {
-                                first_name: true,
-                                last_name: true,
-                                position: true,
-                                address: true,
-                                contact: true,
-                                avatarUrl: true,
-                            },
-                        },
+                        Profile: true,
                     },
                 },
             },

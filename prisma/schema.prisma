@@ -87,6 +87,12 @@ model Transaction {
   status   TRANSACTION_STATUS @default(WAITING)
   remarks  String?
 
+  //slip
+  release_slip_num       String?
+  materials_issuance_num String?
+  gate_pass_num          String?
+  return_slip_num        String?
+
   // relations
   User      User     @relation(fields: [userId], references: [id])
   userId    String

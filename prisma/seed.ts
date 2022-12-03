@@ -236,7 +236,7 @@ async function main() {
         },
     });
 
-    // create transactions
+    // create transactions make 15 random transactions
     const transaction1 = await prisma.transaction.create({
         data: {
             quantity: 6,
@@ -256,6 +256,9 @@ async function main() {
             userId: admin.id,
             projectId: project1.id,
             itemId: item2.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
         },
     });
 
@@ -267,6 +270,9 @@ async function main() {
             userId: admin.id,
             projectId: project1.id,
             itemId: item3.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
         },
     });
 
@@ -278,6 +284,9 @@ async function main() {
             userId: admin.id,
             projectId: project1.id,
             itemId: item1.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
         },
     });
 
@@ -289,6 +298,10 @@ async function main() {
             userId: admin.id,
             projectId: project2.id,
             itemId: item3.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
+            return_slip_num: "#123456",
         },
     });
 
@@ -300,6 +313,79 @@ async function main() {
             userId: super_admin.id,
             projectId: project2.id,
             itemId: item2.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
+            return_slip_num: "#123456",
+        },
+    });
+
+    const transaction7 = await prisma.transaction.create({
+        data: {
+            quantity: 6,
+            status: TRANSACTION_STATUS.ON_DELIVERY,
+            remarks: "remarks",
+            userId: admin.id,
+            projectId: project2.id,
+            itemId: item1.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
+        },
+    });
+
+    const transaction8 = await prisma.transaction.create({
+        data: {
+            quantity: 6,
+            status: TRANSACTION_STATUS.WAITING,
+            remarks: "remarks",
+            userId: controller.id,
+            projectId: project2.id,
+            itemId: item1.id,
+        },
+    });
+
+    const transaction9 = await prisma.transaction.create({
+        data: {
+            quantity: 4,
+            status: TRANSACTION_STATUS.ON_RETURN,
+            remarks: "remarks",
+            userId: controller.id,
+            projectId: project2.id,
+            itemId: item2.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
+            return_slip_num: "#123456",
+        },
+    });
+
+    const transaction10 = await prisma.transaction.create({
+        data: {
+            quantity: 4,
+            status: TRANSACTION_STATUS.ON_DELIVERY,
+            remarks: "remarks",
+            userId: controller.id,
+            projectId: project2.id,
+            itemId: item3.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
+        },
+    });
+
+    const transaction11 = await prisma.transaction.create({
+        data: {
+            quantity: 4,
+            status: TRANSACTION_STATUS.CONFIRMED_RECEIVED,
+            remarks: "remarks",
+            userId: controller.id,
+            projectId: project2.id,
+            itemId: item1.id,
+            release_slip_num: "#123456",
+            materials_issuance_num: "#123456",
+            gate_pass_num: "#123456",
+            return_slip_num: "#123456",
         },
     });
 
