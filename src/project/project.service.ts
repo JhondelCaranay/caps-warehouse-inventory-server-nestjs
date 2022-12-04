@@ -1,83 +1,57 @@
-import { PrismaService } from "./../prisma/prisma.service";
+import { UserModel } from "./../user/user.model";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateProjectDto, UpdateProjectDto } from "./dto";
+import { ProjectModel } from "./project.model";
 
 @Injectable()
 export class ProjectService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private projectModel: ProjectModel, private userModel: UserModel) {}
 
     async create(dto: CreateProjectDto) {
-        // check for duplicate category
-        const duplicate = await this.prisma.project.findFirst({
-            where: {
-                name: dto.name,
-            },
-        });
+        // check for duplicate project
+        const duplicate = await this.projectModel.findOneByName(dto.name);
+        if (duplicate) throw new BadRequestException(`Project name already exists!`);
 
-        if (duplicate) throw new BadRequestException(`${dto.name} already exists`);
+        // check if user exists, throw a 404 error if not found
+        const isUserExists = await this.userModel.findOne(dto.userId);
+        if (!isUserExists) throw new NotFoundException(`User id not found!`);
 
-        const newProject = await this.prisma.project.create({
-            data: {
-                name: dto.name,
-                address: dto.address,
-                userId: dto.userId,
-            },
-        });
-
+        const newProject = await this.projectModel.create(dto);
         return newProject;
     }
 
     async findAll() {
-        const projects = await this.prisma.project.findMany({
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
-
+        const projects = await this.projectModel.findAll();
         return projects;
     }
 
     async findOne(id: string) {
-        // check if category exists, throw a 404 error if not found
-        const project = await this.prisma.project.findUnique({
-            where: {
-                id: id,
-            },
-        });
-
-        if (!project) {
-            throw new NotFoundException(`Project id not found!`);
-        }
+        // check if project exists, throw a 404 error if not found
+        const project = await this.projectModel.findOne(id);
+        if (!project) throw new NotFoundException(`Project id not found!`);
 
         return project;
     }
 
     async update(id: string, dto: UpdateProjectDto) {
-        await this.findOne(id); // check if category exists , throw a 404 error if not found
+        // check if project exists, throw a 404 error if not found
+        const isProjectExist = await this.projectModel.findOne(id);
+        if (!isProjectExist) throw new NotFoundException(`Project id not found!`);
 
-        const project = await this.prisma.project.update({
-            where: {
-                id: id,
-            },
-            data: {
-                name: dto.name || undefined,
-                address: dto.address || undefined,
-                userId: dto.userId || undefined,
-            },
-        });
+        // check if user exists, throw a 404 error if not found
+        const isUserExists = await this.userModel.findOne(dto.userId);
+        if (!isUserExists) throw new NotFoundException(`User id not found!`);
 
+        const project = await this.projectModel.update(id, dto);
         return project;
     }
 
     async remove(id: string) {
-        await this.findOne(id); // check if category exists , throw a 404 error if not found
+        // check if project exists, throw a 404 error if not found
+        const isProjectExist = await this.projectModel.findOne(id);
+        if (!isProjectExist) throw new NotFoundException(`Project id not found!`);
 
-        const project = await this.prisma.project.delete({
-            where: {
-                id: id,
-            },
-        });
-
+        const project = await this.projectModel.remove(id);
         return project;
     }
 }
