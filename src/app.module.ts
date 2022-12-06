@@ -11,6 +11,7 @@ import { ProjectModule } from "./project/project.module";
 import { ItemModule } from "./item/item.module";
 import { UserModule } from "./user/user.module";
 import { TransactionModule } from "./transaction/transaction.module";
+import { RolesGuard } from "./common/guards/roles.guard";
 
 @Module({
     imports: [
@@ -29,6 +30,10 @@ import { TransactionModule } from "./transaction/transaction.module";
         {
             provide: APP_GUARD,
             useClass: AtGuard,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: RolesGuard,
         },
     ],
 })

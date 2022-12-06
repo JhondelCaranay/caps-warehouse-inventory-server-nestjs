@@ -21,6 +21,7 @@ export class UserModel {
                 email: true,
                 status: true,
                 role: true,
+                profileId: true,
                 Profile: true,
             },
         });
@@ -48,6 +49,7 @@ export class UserModel {
                 email: true,
                 status: true,
                 role: true,
+                profileId: true,
                 Profile: true,
             },
         });
@@ -65,6 +67,7 @@ export class UserModel {
                 email: true,
                 status: true,
                 role: true,
+                profileId: true,
                 Profile: true,
             },
         });
@@ -104,6 +107,7 @@ export class UserModel {
                 email: true,
                 status: true,
                 role: true,
+                profileId: true,
                 Profile: true,
             },
         });

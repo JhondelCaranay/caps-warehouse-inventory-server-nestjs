@@ -30,7 +30,7 @@ export class AuthService {
         });
 
         // generate access token and refresh token
-        const access_token = this.getAccessToken(newUser.id, newUser.email);
+        const access_token = this.getAccessToken(newUser.id, newUser.email, newUser.role);
         const refresh_token = this.getRefreshToken(newUser.id, newUser.email);
         // update user hashed refresh token
         await this.updateHashRt(newUser.id, refresh_token);
@@ -58,7 +58,7 @@ export class AuthService {
         }
 
         // generate access token and refresh token
-        const access_token = this.getAccessToken(user.id, user.email);
+        const access_token = this.getAccessToken(user.id, user.email, user.role);
         const refresh_token = this.getRefreshToken(user.id, user.email);
 
         // update user hashed refresh token
@@ -97,7 +97,7 @@ export class AuthService {
         }
 
         // generate access token and refresh token
-        const access_token = this.getAccessToken(user.id, user.email);
+        const access_token = this.getAccessToken(user.id, user.email, user.role);
         const refresh_token = this.getRefreshToken(user.id, user.email);
 
         // update user hashed refresh token
@@ -113,11 +113,12 @@ export class AuthService {
         return "me";
     }
 
-    getAccessToken(userId: string, email: string) {
+    getAccessToken(userId: string, email: string, role: string) {
         return this.jwtService.sign(
             {
                 sub: userId,
                 email,
+                role,
             },
             {
                 expiresIn: "15m",

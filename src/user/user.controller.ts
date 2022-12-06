@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param } from "@nestjs/common";
-import { Public } from "src/common/decorators";
+import { ROLE } from "@prisma/client";
+import { Roles } from "src/common/decorators";
 import { CreateUserDto, UpdateUserDto } from "./dto";
 import { UserService } from "./user.service";
 
@@ -7,25 +8,25 @@ import { UserService } from "./user.service";
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN)
     @Post()
     create(@Body() dto: CreateUserDto) {
         return this.userService.create(dto);
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get()
     findAll() {
         return this.userService.findAll();
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get(":id")
     findOne(@Param("id") id: string) {
         return this.userService.findOne(id);
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Patch(":id")
     update(@Param("id") id: string, @Body() dto: UpdateUserDto) {
         return this.userService.update(id, dto);

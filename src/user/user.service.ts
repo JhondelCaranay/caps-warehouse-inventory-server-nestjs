@@ -1,5 +1,5 @@
-import { codeGenerator } from "./../common/utils/PasswordGenerator.utils";
-import { sendToSmtpTempPassword } from "./../common/utils/smtp.utils";
+import { codeGenerator } from "../common/utils/codeGenerator.util";
+import { sendToSmtpTempPassword } from "../common/utils/smtp.util";
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { CreateUserDto, UpdateUserDto } from "./dto";
 import * as argon from "argon2";
