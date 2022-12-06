@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
-import { Public } from "src/common/decorators";
+import { ROLE } from "@prisma/client";
+import { Roles } from "src/common/decorators";
 import { CreateProjectDto, UpdateProjectDto } from "./dto";
 import { ProjectService } from "./project.service";
 
@@ -7,31 +8,31 @@ import { ProjectService } from "./project.service";
 export class ProjectController {
     constructor(private readonly projectService: ProjectService) {}
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER)
     @Post()
     create(@Body() dto: CreateProjectDto) {
         return this.projectService.create(dto);
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get()
     findAll() {
         return this.projectService.findAll();
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get(":id")
     findOne(@Param("id") id: string) {
         return this.projectService.findOne(id);
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER)
     @Patch(":id")
     update(@Param("id") id: string, @Body() dto: UpdateProjectDto) {
         return this.projectService.update(id, dto);
     }
 
-    @Public()
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN)
     @Delete(":id")
     remove(@Param("id") id: string) {
         return this.projectService.remove(id);

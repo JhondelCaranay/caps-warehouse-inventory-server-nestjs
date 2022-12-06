@@ -14,7 +14,18 @@ export class ProjectModel {
                 userId: dto.userId,
             },
             include: {
-                User: true,
+                User: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
             },
         });
     }
@@ -22,7 +33,18 @@ export class ProjectModel {
     async findAll() {
         return await this.prisma.project.findMany({
             include: {
-                User: true,
+                User: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
             },
             orderBy: {
                 createdAt: "desc",
@@ -36,7 +58,18 @@ export class ProjectModel {
                 id: id,
             },
             include: {
-                User: true,
+                User: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
             },
         });
     }
@@ -47,7 +80,18 @@ export class ProjectModel {
                 name: name,
             },
             include: {
-                User: true,
+                User: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
             },
         });
     }
@@ -63,7 +107,18 @@ export class ProjectModel {
                 userId: dto.userId || undefined,
             },
             include: {
-                User: true,
+                User: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
             },
         });
     }
