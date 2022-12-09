@@ -53,11 +53,13 @@ model User {
   role   ROLE        @default(USER)
 
   // relations
-  Transaction Transaction[]
 
   Profile   Profile   @relation(fields: [profileId], references: [id])
   profileId String    @unique
   Project   Project[]
+
+  Sender   Transaction[] @relation("Sender")
+  Receiver Transaction[] @relation("Receiver")
 
   @@map("users")
 }
@@ -93,13 +95,17 @@ model Transaction {
   gate_pass_num          String?
   return_slip_num        String?
 
-  // relations
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String
   Item      Item?    @relation(fields: [itemId], references: [id])
   itemId    String?
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId String?
+
+  // relations
+  Sender   User?   @relation("Sender", fields: [senderId], references: [id])
+  senderId String?
+
+  Receiver   User?   @relation("Receiver", fields: [receiverId], references: [id])
+  receiverId String?
 
   @@map("transactions")
 }

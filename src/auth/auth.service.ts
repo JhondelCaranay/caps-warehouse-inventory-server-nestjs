@@ -121,7 +121,7 @@ export class AuthService {
                 role,
             },
             {
-                expiresIn: "15m",
+                expiresIn: "1d", // turn it back to 15min after loginPerisist is done
                 secret: process.env.ACCES_JWT_SECRET,
             },
         );
