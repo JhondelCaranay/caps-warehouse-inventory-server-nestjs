@@ -12,12 +12,13 @@ export class TransactionModel {
                 quantity: dto.quantity,
                 remarks: dto.remarks || undefined,
                 status: dto.status || undefined,
-                userId: dto.userId,
+                senderId: dto.senderId,
+                receiverId: dto.receiverId,
                 itemId: dto.itemId,
                 projectId: dto.projectId,
-                release_slip_num: dto.release_slip_num,
-                materials_issuance_num: dto.materials_issuance_num,
-                gate_pass_num: dto.gate_pass_num,
+                release_slip_num: dto.release_slip_num || undefined,
+                materials_issuance_num: dto.materials_issuance_num || undefined,
+                gate_pass_num: dto.gate_pass_num || undefined,
                 return_slip_num: dto.return_slip_num || undefined,
             },
             include: {
@@ -27,23 +28,20 @@ export class TransactionModel {
                         Brand: true,
                     },
                 },
-                Project: {
-                    include: {
-                        User: {
-                            select: {
-                                id: true,
-                                createdAt: true,
-                                updatedAt: true,
-                                email: true,
-                                status: true,
-                                role: true,
-                                profileId: true,
-                                Profile: true,
-                            },
-                        },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
                     },
                 },
-                User: {
+                Receiver: {
                     select: {
                         id: true,
                         createdAt: true,
@@ -68,23 +66,20 @@ export class TransactionModel {
                         Brand: true,
                     },
                 },
-                Project: {
-                    include: {
-                        User: {
-                            select: {
-                                id: true,
-                                createdAt: true,
-                                updatedAt: true,
-                                email: true,
-                                status: true,
-                                role: true,
-                                profileId: true,
-                                Profile: true,
-                            },
-                        },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
                     },
                 },
-                User: {
+                Receiver: {
                     select: {
                         id: true,
                         createdAt: true,
@@ -115,23 +110,20 @@ export class TransactionModel {
                         Brand: true,
                     },
                 },
-                Project: {
-                    include: {
-                        User: {
-                            select: {
-                                id: true,
-                                createdAt: true,
-                                updatedAt: true,
-                                email: true,
-                                status: true,
-                                role: true,
-                                profileId: true,
-                                Profile: true,
-                            },
-                        },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
                     },
                 },
-                User: {
+                Receiver: {
                     select: {
                         id: true,
                         createdAt: true,
@@ -156,7 +148,8 @@ export class TransactionModel {
                 quantity: dto.quantity || undefined,
                 remarks: dto.remarks || undefined,
                 status: dto.status || undefined,
-                userId: dto.userId || undefined,
+                senderId: dto.senderId || undefined,
+                receiverId: dto.receiverId || undefined,
                 itemId: dto.itemId || undefined,
                 projectId: dto.projectId || undefined,
                 return_slip_num: dto.return_slip_num || undefined,
@@ -171,23 +164,20 @@ export class TransactionModel {
                         Brand: true,
                     },
                 },
-                Project: {
-                    include: {
-                        User: {
-                            select: {
-                                id: true,
-                                createdAt: true,
-                                updatedAt: true,
-                                email: true,
-                                status: true,
-                                role: true,
-                                profileId: true,
-                                Profile: true,
-                            },
-                        },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
                     },
                 },
-                User: {
+                Receiver: {
                     select: {
                         id: true,
                         createdAt: true,

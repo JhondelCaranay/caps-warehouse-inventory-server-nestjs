@@ -24,8 +24,12 @@ export class TransactionService {
         if (!isProjectExist) throw new NotFoundException(`Project id not found!`);
 
         // check if user exists, throw a 404 error if not found
-        const isUserExist = await this.userModel.findOne(dto.userId);
-        if (!isUserExist) throw new NotFoundException(`User id not found!`);
+        const isUserSenderExist = await this.userModel.findOne(dto.senderId);
+        if (!isUserSenderExist) throw new NotFoundException(`User id not found!`);
+
+        // check if user exists, throw a 404 error if not found
+        const isUserRecieverExist = await this.userModel.findOne(dto.receiverId);
+        if (!isUserRecieverExist) throw new NotFoundException(`User id not found!`);
 
         const transaction = await this.transactionModel.create(dto);
         return transaction;
@@ -59,8 +63,12 @@ export class TransactionService {
         if (!isProjectExist) throw new NotFoundException(`Project id not found!`);
 
         // check if user exists, throw a 404 error if not found
-        const isUserExist = await this.userModel.findOne(dto.userId);
-        if (!isUserExist) throw new NotFoundException(`User id not found!`);
+        const isUserSenderExist = await this.userModel.findOne(dto.senderId);
+        if (!isUserSenderExist) throw new NotFoundException(`User id not found!`);
+
+        // check if user exists, throw a 404 error if not found
+        const isUserRecieverExist = await this.userModel.findOne(dto.receiverId);
+        if (!isUserRecieverExist) throw new NotFoundException(`User id not found!`);
 
         const transaction = await this.transactionModel.update(id, dto);
 

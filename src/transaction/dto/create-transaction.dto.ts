@@ -21,7 +21,12 @@ export class CreateTransactionDto {
     @IsNotEmpty()
     @IsString()
     @IsUUID()
-    userId: string;
+    senderId: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @IsUUID()
+    receiverId: string;
 
     @IsNotEmpty()
     @IsString()
@@ -33,14 +38,17 @@ export class CreateTransactionDto {
     @IsUUID()
     projectId: string;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsString()
     release_slip_num: string;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsString()
     materials_issuance_num: string;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsString()
     gate_pass_num: string;
