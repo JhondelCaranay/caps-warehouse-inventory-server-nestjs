@@ -133,12 +133,12 @@ model Item {
 
   name        String  @unique
   description String?
-  model       String
+  model       String?
   unit        UNIT    @default(UNIT)
   // stock       STOCK   @default(OUT_OF_STOCK)
   quantity    Int     @default(0)
-  price       Float
-  pictureUrl  String?
+  price       Float   @default(0)
+  pictureUrl  String? @db.VarChar(255)
 
   // relations
   Transaction Transaction[]

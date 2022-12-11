@@ -11,6 +11,7 @@ export class CreateItemDto {
     @IsString()
     description: string;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsString()
     model: string;
@@ -33,6 +34,7 @@ export class CreateItemDto {
     price: number;
 
     @IsOptional()
+    @IsNotEmpty()
     @IsString()
     pictureUrl: string;
 

@@ -11,7 +11,7 @@ export class ItemModel {
             data: {
                 name: dto.name,
                 description: dto.description || undefined,
-                model: dto.model,
+                model: dto.model || undefined,
                 unit: dto.unit,
                 quantity: dto.quantity,
                 price: dto.price,
