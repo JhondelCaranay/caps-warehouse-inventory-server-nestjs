@@ -72,7 +72,7 @@ model Profile {
   position   String?
   address    String?
   contact    String?
-  avatarUrl  String?
+  avatarUrl  String? @db.VarChar(255)
 
   // relations
   User User?

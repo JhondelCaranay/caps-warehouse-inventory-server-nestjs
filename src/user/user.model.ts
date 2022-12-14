@@ -12,6 +12,7 @@ export class UserModel {
                 email: dto.email,
                 hash: hash,
                 role: dto.role,
+                status: dto.status || undefined,
                 profileId: profileId,
             },
             select: {
