@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
-import { Roles } from "src/common/decorators";
+import { Public, Roles } from "src/common/decorators";
 import { CreateTransactionDto, UpdateTransactionDto } from "./dto";
 import { TransactionService } from "./transaction.service";
 
