@@ -4,6 +4,8 @@ import { ItemModel } from "./../item/item.model";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateTransactionDto, UpdateTransactionDto } from "./dto";
 import { TransactionModel } from "./transaction.model";
+import { PrismaService } from "src/prisma/prisma.service";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class TransactionService {
@@ -12,6 +14,7 @@ export class TransactionService {
         private itemModel: ItemModel,
         private projectModel: ProjectModel,
         private userModel: UserModel,
+        private prisma: PrismaService,
     ) {}
 
     async create(dto: CreateTransactionDto) {
@@ -25,11 +28,11 @@ export class TransactionService {
 
         // check if user exists, throw a 404 error if not found
         const isUserSenderExist = await this.userModel.findOne(dto.senderId);
-        if (!isUserSenderExist) throw new NotFoundException(`User id not found!`);
-
+        if (!isUserSenderExist) throw new NotFoundException(`User Sender id not found!`);
+        console.log("sucess sender");
         // check if user exists, throw a 404 error if not found
         const isUserRecieverExist = await this.userModel.findOne(dto.receiverId);
-        if (!isUserRecieverExist) throw new NotFoundException(`User id not found!`);
+        if (!isUserRecieverExist) throw new NotFoundException(`User Receiver id not found!`);
 
         const transaction = await this.transactionModel.create(dto);
         return transaction;

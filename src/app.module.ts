@@ -12,6 +12,7 @@ import { ItemModule } from "./item/item.module";
 import { UserModule } from "./user/user.module";
 import { TransactionModule } from "./transaction/transaction.module";
 import { RolesGuard } from "./common/guards/roles.guard";
+import { StatsModule } from './stats/stats.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { RolesGuard } from "./common/guards/roles.guard";
         ItemModule,
         UserModule,
         TransactionModule,
+        StatsModule,
     ],
     controllers: [AppController],
     providers: [
