@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
-import { Roles } from "src/common/decorators";
+import { Roles, GetCurrentUserId } from "src/common/decorators";
 import { CreateProjectDto, UpdateProjectDto } from "./dto";
 import { ProjectService } from "./project.service";
 
@@ -15,9 +15,9 @@ export class ProjectController {
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
-    @Get()
-    findAll() {
-        return this.projectService.findAll();
+    @Get("my-projects")
+    findAllMyProjects(@GetCurrentUserId() userId: string) {
+        return this.projectService.findAllMyProjects(userId);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)

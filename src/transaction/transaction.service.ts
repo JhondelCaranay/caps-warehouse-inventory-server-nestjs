@@ -44,6 +44,52 @@ export class TransactionService {
         return transactions;
     }
 
+    async findAllMyTransaction(userId: string) {
+        // get transaction by user id
+        const transactions = await this.prisma.transaction.findMany({
+            where: {
+                receiverId: userId,
+            },
+            include: {
+                Item: {
+                    include: {
+                        Category: true,
+                        Brand: true,
+                    },
+                },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
+                Receiver: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+        return transactions;
+    }
+
     async findOne(id: string) {
         // check if transaction exists , throw a 404 error if not found
         const transaction = await this.transactionModel.findOne(id);

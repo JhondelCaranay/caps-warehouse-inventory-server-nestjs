@@ -252,7 +252,7 @@ async function main() {
     const transaction2 = await prisma.transaction.create({
         data: {
             quantity: 6,
-            status: TRANSACTION_STATUS.ON_PROCESS,
+            status: TRANSACTION_STATUS.ON_DELIVERY,
             remarks: "remarks",
             senderId: controller.id,
             receiverId: engineer.id,
