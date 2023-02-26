@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
-import { Public, Roles } from "src/common/decorators";
+import { Public, Roles, GetCurrentUserId } from "src/common/decorators";
 import { CreateTransactionDto, UpdateTransactionDto } from "./dto";
 import { TransactionService } from "./transaction.service";
 
@@ -18,6 +18,12 @@ export class TransactionController {
     @Get()
     findAll() {
         return this.transactionService.findAll();
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get("my-transaction")
+    findAllMyTransaction(@GetCurrentUserId() userId: string) {
+        return this.transactionService.findAllMyTransaction(userId);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)

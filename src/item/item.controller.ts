@@ -14,7 +14,7 @@ export class ItemController {
         return this.itemService.create(dto);
     }
 
-    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.USER)
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get()
     findAll() {
         return this.itemService.findAll();
@@ -26,7 +26,7 @@ export class ItemController {
         return this.itemService.findOne(id);
     }
 
-    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER, ROLE.USER)
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER, ROLE.ENGINEER)
     @Patch(":id")
     update(@Param("id") id: string, @Body() dto: UpdateItemDto) {
         return this.itemService.update(id, dto);
