@@ -2,11 +2,11 @@ import { UserModel } from "./../user/user.model";
 import { ProjectModel } from "./../project/project.model";
 import { ItemModel } from "./../item/item.model";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { CreateTransactionDto, UpdateTransactionDto } from "./dto";
+import { CreateTransactionDto, UpdateTransactionDto, UpdateTransactionStatusDto } from "./dto";
 import { TransactionModel } from "./transaction.model";
 import { PrismaService } from "src/prisma/prisma.service";
-import { Prisma } from "@prisma/client";
-
+import { TRANSACTION_STATUS } from "@prisma/client";
+import { format } from "date-fns";
 @Injectable()
 export class TransactionService {
     constructor(
@@ -27,12 +27,24 @@ export class TransactionService {
         if (!isProjectExist) throw new NotFoundException(`Project id not found!`);
 
         // check if user exists, throw a 404 error if not found
-        const isUserSenderExist = await this.userModel.findOne(dto.senderId);
+        const isUserSenderExist = dto.senderId ? await this.userModel.findOne(dto.senderId) : true;
         if (!isUserSenderExist) throw new NotFoundException(`User Sender id not found!`);
         console.log("sucess sender");
         // check if user exists, throw a 404 error if not found
         const isUserRecieverExist = await this.userModel.findOne(dto.receiverId);
         if (!isUserRecieverExist) throw new NotFoundException(`User Receiver id not found!`);
+
+        const totaltransaction = await this.prisma.transaction.count();
+
+        dto.release_slip_num = dto.release_slip_num
+            ? format(new Date(), `'RS${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
+            : null;
+        dto.materials_issuance_num = dto.materials_issuance_num
+            ? format(new Date(), `'MI${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
+            : null;
+        dto.gate_pass_num = dto.gate_pass_num
+            ? format(new Date(), `'GP${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
+            : null;
 
         const transaction = await this.transactionModel.create(dto);
         return transaction;
@@ -41,6 +53,52 @@ export class TransactionService {
     async findAll() {
         // order by createdAt DESC
         const transactions = await this.transactionModel.findAll();
+        return transactions;
+    }
+
+    async findAllByProjectId(projectId: string) {
+        // get transaction by project id
+        const transactions = await this.prisma.transaction.findMany({
+            where: {
+                projectId: projectId,
+            },
+            include: {
+                Item: {
+                    include: {
+                        Category: true,
+                        Brand: true,
+                    },
+                },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
+                Receiver: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
         return transactions;
     }
 
@@ -120,6 +178,124 @@ export class TransactionService {
         if (!isUserRecieverExist) throw new NotFoundException(`User id not found!`);
 
         const transaction = await this.transactionModel.update(id, dto);
+
+        return transaction;
+    }
+
+    async updateStatus(id: string, dto: UpdateTransactionStatusDto, userId: string) {
+        // check if transaction exists, throw a 404 error if not found
+        const transaction = await this.transactionModel.findOne(id);
+        if (!transaction) throw new NotFoundException(`Transaction id not found!`);
+
+        // find item from transaction
+        const item = await this.itemModel.findOne(transaction.itemId);
+        if (!item) throw new NotFoundException(`Item id not found!`);
+
+        if (transaction.status === TRANSACTION_STATUS.WAITING) {
+            const updatedTransaction = await this.prisma.transaction.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    status: dto.status || TRANSACTION_STATUS.ON_DELIVERY,
+                    remarks: dto.remarks,
+                    Sender: {
+                        connect: {
+                            id: userId,
+                        },
+                    },
+                },
+            });
+
+            if (transaction.quantity > item.quantity || item.quantity === 0) {
+                throw new NotFoundException(`Item quantity not enough!`);
+            }
+
+            // update item quantity
+            const updatedItem = await this.prisma.item.update({
+                where: {
+                    id: item.id,
+                },
+                data: {
+                    quantity: item.quantity - transaction.quantity,
+                },
+            });
+
+            return updatedTransaction;
+        }
+
+        if (transaction.status === TRANSACTION_STATUS.ON_DELIVERY) {
+            const updatedTransaction = await this.prisma.transaction.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    status: dto.status || TRANSACTION_STATUS.CONFIRMED_RECEIVED,
+                    remarks: dto.remarks,
+                    Sender: {
+                        connect: {
+                            id: userId,
+                        },
+                    },
+                },
+            });
+
+            return updatedTransaction;
+        }
+
+        if (transaction.status === TRANSACTION_STATUS.CONFIRMED_RECEIVED) {
+            const totaltransaction = await this.prisma.transaction.count();
+            const return_slip_num = format(
+                new Date(),
+                `'RS${totaltransaction + 1}-Q${transaction.quantity}-Y'yy'M'MM'D'dd`,
+            );
+
+            const updatedTransaction = await this.prisma.transaction.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    status: dto.status || TRANSACTION_STATUS.ON_RETURN,
+                    remarks: dto.remarks,
+                    return_slip_num: return_slip_num,
+                    Sender: {
+                        connect: {
+                            id: userId,
+                        },
+                    },
+                },
+            });
+
+            return updatedTransaction;
+        }
+
+        if (transaction.status === TRANSACTION_STATUS.ON_RETURN) {
+            const updatedTransaction = await this.prisma.transaction.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    status: dto.status || TRANSACTION_STATUS.CONFIRMED_RETURNED,
+                    remarks: dto.remarks,
+                    Sender: {
+                        connect: {
+                            id: userId,
+                        },
+                    },
+                },
+            });
+
+            // update item quantity
+            const updatedItem = await this.prisma.item.update({
+                where: {
+                    id: item.id,
+                },
+                data: {
+                    quantity: item.quantity + transaction.quantity,
+                },
+            });
+            return updatedTransaction;
+        }
 
         return transaction;
     }

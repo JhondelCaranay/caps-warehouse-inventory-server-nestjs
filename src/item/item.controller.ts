@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
 import { Roles } from "src/common/decorators";
 import { CreateItemDto, UpdateItemDto } from "./dto";
@@ -16,8 +16,19 @@ export class ItemController {
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get()
-    findAll() {
-        return this.itemService.findAll();
+    findAll(
+        @Query("name") name: string,
+        @Query("category") category: string,
+        @Query("page") skip: number,
+        @Query("limit") take: number,
+    ) {
+        // console.log(name, typeof name);
+        // console.log(category, typeof category);
+        console.log("page: ", skip, typeof skip);
+        console.log("limit: ", take, typeof take);
+        console.log("newwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+
+        return this.itemService.findAll(name, category, skip, take);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)

@@ -18,6 +18,7 @@ export class CreateTransactionDto {
     })
     status: TRANSACTION_STATUS;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsString()
     @IsUUID()

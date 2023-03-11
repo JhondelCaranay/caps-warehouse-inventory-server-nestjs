@@ -27,6 +27,15 @@ export class UserService {
         return newUser;
     }
 
+    async getMyProfile(id: string) {
+        // check if user exists, throw a 404 error if not found
+        const user = await this.userModel.findOne(id);
+        if (!user) throw new NotFoundException(`User id not found!`);
+
+        const profile = await this.userModel.getMyProfile(id);
+        return profile;
+    }
+
     async findAll() {
         const users = await this.userModel.findAll();
         return users;
