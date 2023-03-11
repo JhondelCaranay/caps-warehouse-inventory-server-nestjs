@@ -15,6 +15,12 @@ export class ProjectController {
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get()
+    findAll() {
+        return this.projectService.findAll();
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get("my-projects")
     findAllMyProjects(@GetCurrentUserId() userId: string) {
         return this.projectService.findAllMyProjects(userId);

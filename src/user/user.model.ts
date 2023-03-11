@@ -41,6 +41,24 @@ export class UserModel {
         });
     }
 
+    async getMyProfile(id: string) {
+        return await this.prisma.user.findUnique({
+            where: {
+                id: id,
+            },
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                email: true,
+                status: true,
+                role: true,
+                profileId: true,
+                Profile: true,
+            },
+        });
+    }
+
     async findAll() {
         return await this.prisma.user.findMany({
             select: {

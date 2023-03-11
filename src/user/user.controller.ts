@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
-import { Roles } from "src/common/decorators";
+import { GetCurrentUserId, Roles } from "src/common/decorators";
 import { CreateUserDto, UpdateUserDto } from "./dto";
 import { UserService } from "./user.service";
 
@@ -18,6 +18,12 @@ export class UserController {
     @Get()
     findAll() {
         return this.userService.findAll();
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get("me")
+    getMyProfile(@GetCurrentUserId() userId: string) {
+        return this.userService.getMyProfile(userId);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)

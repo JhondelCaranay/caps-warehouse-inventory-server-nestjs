@@ -12,7 +12,7 @@ export class TransactionModel {
                 quantity: dto.quantity,
                 remarks: dto.remarks || undefined,
                 status: dto.status || undefined,
-                senderId: dto.senderId,
+                senderId: dto.senderId || undefined,
                 receiverId: dto.receiverId,
                 itemId: dto.itemId,
                 projectId: dto.projectId,

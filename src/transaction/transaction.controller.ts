@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
-import { Public, Roles, GetCurrentUserId } from "src/common/decorators";
-import { CreateTransactionDto, UpdateTransactionDto } from "./dto";
+import { Roles, GetCurrentUserId } from "src/common/decorators";
+import { CreateTransactionDto, UpdateTransactionDto, UpdateTransactionStatusDto } from "./dto";
 import { TransactionService } from "./transaction.service";
 
 @Controller("transactions")
@@ -11,6 +11,8 @@ export class TransactionController {
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Post()
     create(@Body() dto: CreateTransactionDto) {
+        console.log(dto);
+        // return { id: "9b33870f-8c4b-43f3-a3ae-58e46adda40d" };
         return this.transactionService.create(dto);
     }
 
@@ -18,6 +20,12 @@ export class TransactionController {
     @Get()
     findAll() {
         return this.transactionService.findAll();
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get("project/:projectId")
+    findAllByProjectId(@Param("projectId") projectId: string) {
+        return this.transactionService.findAllByProjectId(projectId);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
@@ -36,6 +44,14 @@ export class TransactionController {
     @Patch(":id")
     update(@Param("id") id: string, @Body() dto: UpdateTransactionDto) {
         return this.transactionService.update(id, dto);
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Patch("status/:id")
+    updateStatus(@Param("id") id: string, @Body() dto: UpdateTransactionStatusDto, @GetCurrentUserId() userId: string) {
+        console.log({ dto });
+
+        return this.transactionService.updateStatus(id, dto, userId);
     }
 
     // @Public()

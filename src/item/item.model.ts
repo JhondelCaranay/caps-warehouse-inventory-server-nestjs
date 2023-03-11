@@ -26,8 +26,20 @@ export class ItemModel {
         });
     }
 
-    async findAll() {
+    async findAll(name: string, category: string, skip: number, take: number) {
         return await this.prisma.item.findMany({
+            take: take || undefined,
+            skip: skip * take || undefined,
+            where: {
+                name: {
+                    contains: name || undefined,
+                },
+                Category: {
+                    name: {
+                        contains: category || undefined,
+                    },
+                },
+            },
             include: {
                 Category: true,
                 Brand: true,
