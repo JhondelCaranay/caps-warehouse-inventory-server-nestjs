@@ -29,6 +29,11 @@ export class ProjectService {
         return projects;
     }
 
+    async findAllProjectsByEngineerId(engineerId: string) {
+        const projects = await this.projectModel.findAllProjectsByEngineerId(engineerId);
+        return projects;
+    }
+
     async findOne(id: string) {
         // check if project exists, throw a 404 error if not found
         const project = await this.projectModel.findOne(id);

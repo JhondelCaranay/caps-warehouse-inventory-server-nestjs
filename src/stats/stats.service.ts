@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
-
 @Injectable()
 export class StatsService {
     constructor(private prisma: PrismaService) {}
@@ -87,5 +86,65 @@ export class StatsService {
         // }
 
         return combinedData;
+    }
+
+    async getAllTotals() {
+        const totalTransactions = await this.prisma.transaction.count();
+        const totalItems = await this.prisma.item.count();
+        const totalProjects = await this.prisma.project.count();
+        const totalUsers = await this.prisma.user.count();
+
+        return {
+            totalTransactions,
+            totalItems,
+            totalProjects,
+            totalUsers,
+        };
+    }
+
+    async findTransactionTotals() {
+        let totalTransactionToday = await this.prisma.transaction.count({
+            where: {
+                createdAt: {
+                    gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+                },
+            },
+        });
+        let totalTransactionThisWeek = await this.prisma.transaction.count({
+            where: {
+                createdAt: {
+                    gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7),
+                },
+            },
+        });
+        let totalTransactionThisMonth = await this.prisma.transaction.count({
+            where: {
+                createdAt: {
+                    gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                },
+            },
+        });
+
+        let totalTransactionThisExactYesterday = await this.prisma.transaction.count({
+            where: {
+                createdAt: {
+                    gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1), // yesterday
+                    lte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), // today
+                },
+            },
+        });
+
+        const percentageChange = Math.round(
+            ((totalTransactionToday - totalTransactionThisExactYesterday) / totalTransactionThisExactYesterday) * 100,
+        );
+        console.log(`Percentage change: ${totalTransactionToday}%`);
+        console.log(`Percentage change: ${totalTransactionThisExactYesterday}%`);
+        console.log(`Percentage change: ${percentageChange}%`);
+        return {
+            totalTransactionToday,
+            totalTransactionThisWeek,
+            totalTransactionThisMonth,
+            percentageChange,
+        };
     }
 }

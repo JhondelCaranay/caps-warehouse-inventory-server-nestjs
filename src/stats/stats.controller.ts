@@ -12,4 +12,16 @@ export class StatsController {
     findAll() {
         return this.statsService.getChartStats();
     }
+
+    @Public()
+    @Get("totals")
+    findTotals() {
+        return this.statsService.getAllTotals();
+    }
+
+    @Public()
+    @Get("transaction/totals")
+    findTransactionTotals() {
+        return this.statsService.findTransactionTotals();
+    }
 }
