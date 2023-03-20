@@ -27,6 +27,12 @@ export class ProjectController {
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get("engineer/:id")
+    findAllProjectsByEngineerId(@Param("id") engineerId: string) {
+        return this.projectService.findAllProjectsByEngineerId(engineerId);
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get(":id")
     findOne(@Param("id") id: string) {
         return this.projectService.findOne(id);

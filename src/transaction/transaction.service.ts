@@ -34,19 +34,21 @@ export class TransactionService {
         const isUserRecieverExist = await this.userModel.findOne(dto.receiverId);
         if (!isUserRecieverExist) throw new NotFoundException(`User Receiver id not found!`);
 
-        const totaltransaction = await this.prisma.transaction.count();
+        // const totaltransaction = await this.prisma.transaction.count();
 
-        dto.release_slip_num = dto.release_slip_num
-            ? format(new Date(), `'RS${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
-            : null;
-        dto.materials_issuance_num = dto.materials_issuance_num
-            ? format(new Date(), `'MI${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
-            : null;
-        dto.gate_pass_num = dto.gate_pass_num
-            ? format(new Date(), `'GP${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
-            : null;
+        // dto.release_slip_num = dto.release_slip_num
+        //     ? format(new Date(), `'RS${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
+        //     : null;
+        // dto.materials_issuance_num = dto.materials_issuance_num
+        //     ? format(new Date(), `'MI${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
+        //     : null;
+        // dto.gate_pass_num = dto.gate_pass_num
+        //     ? format(new Date(), `'GP${totaltransaction + 1}-Q${dto.quantity}-Y'yy'M'MM'D'dd`)
+        //     : null;
 
         const transaction = await this.transactionModel.create(dto);
+        console.log("create : ", { transaction });
+
         return transaction;
     }
 
@@ -192,6 +194,23 @@ export class TransactionService {
         if (!item) throw new NotFoundException(`Item id not found!`);
 
         if (transaction.status === TRANSACTION_STATUS.WAITING) {
+            const totaltransaction = await this.prisma.transaction.count();
+
+            const release_slip_num = format(
+                new Date(),
+                `'RS${totaltransaction + 1}-Q${transaction.quantity}-Y'yy'M'MM'D'dd`,
+            );
+
+            const materials_issuance_num = format(
+                new Date(),
+                `'MI${totaltransaction + 1}-Q${transaction.quantity}-Y'yy'M'MM'D'dd`,
+            );
+
+            const gate_pass_num = format(
+                new Date(),
+                `'GP${totaltransaction + 1}-Q${transaction.quantity}-Y'yy'M'MM'D'dd`,
+            );
+
             const updatedTransaction = await this.prisma.transaction.update({
                 where: {
                     id: id,
@@ -199,6 +218,9 @@ export class TransactionService {
                 data: {
                     status: dto.status || TRANSACTION_STATUS.ON_DELIVERY,
                     remarks: dto.remarks,
+                    release_slip_num: release_slip_num,
+                    materials_issuance_num: materials_issuance_num,
+                    gate_pass_num: gate_pass_num,
                     Sender: {
                         connect: {
                             id: userId,
