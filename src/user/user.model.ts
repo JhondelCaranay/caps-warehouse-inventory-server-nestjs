@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateUserDto, UpdateUserDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { ROLE } from "@prisma/client";
 
 @Injectable()
 export class UserModel {
@@ -45,6 +46,25 @@ export class UserModel {
         return await this.prisma.user.findUnique({
             where: {
                 id: id,
+            },
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                email: true,
+                status: true,
+                role: true,
+                profileId: true,
+                Profile: true,
+                isNeedChangePassword: true,
+            },
+        });
+    }
+
+    async findAllEngineers() {
+        return await this.prisma.user.findMany({
+            where: {
+                role: ROLE.ENGINEER,
             },
             select: {
                 id: true,
@@ -118,6 +138,28 @@ export class UserModel {
                         avatarUrl: dto.avatarUrl || undefined,
                     },
                 },
+            },
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                email: true,
+                status: true,
+                role: true,
+                profileId: true,
+                Profile: true,
+            },
+        });
+    }
+
+    async changePassword(id: string, hash: string) {
+        return await this.prisma.user.update({
+            where: {
+                id: id,
+            },
+            data: {
+                hash: hash,
+                isNeedChangePassword: false,
             },
             select: {
                 id: true,
