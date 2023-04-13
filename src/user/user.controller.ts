@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ROLE } from "@prisma/client";
 import { GetCurrentUserId, Roles } from "src/common/decorators";
-import { CreateUserDto, UpdateUserDto } from "./dto";
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from "./dto";
 import { UserService } from "./user.service";
 
 @Controller("users")
@@ -24,6 +24,19 @@ export class UserController {
     @Get("me")
     getMyProfile(@GetCurrentUserId() userId: string) {
         return this.userService.getMyProfile(userId);
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get("engineer")
+    getAllEngineers() {
+        return this.userService.getAllEngineers();
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Patch("change-password")
+    changePassword(@GetCurrentUserId() userId: string, @Body() dto: UpdatePasswordDto) {
+        console.log("controller");
+        return this.userService.changePassword(userId, dto);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)

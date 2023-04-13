@@ -26,11 +26,17 @@ enum USER_STATUS {
 
 enum TRANSACTION_STATUS {
   WAITING
-  ON_PROCESS
   ON_DELIVERY
   CONFIRMED_RECEIVED
   ON_RETURN
   CONFIRMED_RETURNED
+  CANCELLED
+}
+
+enum PROJECT_STATUS {
+  ONGOING
+  COMPLETED
+  CANCELLED
 }
 
 // value lowercase
@@ -51,6 +57,8 @@ model User {
   hashRT String?
   status USER_STATUS @default(ACTIVE)
   role   ROLE        @default(USER)
+
+  isNeedChangePassword Boolean @default(true)
 
   // relations
 
@@ -117,6 +125,8 @@ model Project {
 
   name    String
   address String
+
+  status PROJECT_STATUS @default(ONGOING)
 
   // relations
   Transaction Transaction[]

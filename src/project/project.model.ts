@@ -157,6 +157,7 @@ export class ProjectModel {
                 name: dto.name || undefined,
                 address: dto.address || undefined,
                 userId: dto.userId || undefined,
+                status: dto.status || undefined,
             },
             include: {
                 User: {

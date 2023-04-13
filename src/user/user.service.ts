@@ -1,9 +1,10 @@
 import { codeGenerator } from "../common/utils/codeGenerator.util";
 import { sendToSmtpTempPassword } from "../common/utils/smtp.util";
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
-import { CreateUserDto, UpdateUserDto } from "./dto";
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from "./dto";
 import * as argon from "argon2";
 import { UserModel } from "./user.model";
+
 @Injectable()
 export class UserService {
     constructor(private userModel: UserModel) {}
@@ -36,6 +37,11 @@ export class UserService {
         return profile;
     }
 
+    async getAllEngineers() {
+        const users = await this.userModel.findAllEngineers();
+        return users;
+    }
+
     async findAll() {
         const users = await this.userModel.findAll();
         return users;
@@ -54,6 +60,12 @@ export class UserService {
         if (!isUserExists) throw new NotFoundException(`User id not found!`);
 
         const user = await this.userModel.update(id, dto);
+        return user;
+    }
+
+    async changePassword(userId: string, dto: UpdatePasswordDto) {
+        const hash = await argon.hash(dto.password);
+        const user = await this.userModel.changePassword(userId, hash);
         return user;
     }
 
