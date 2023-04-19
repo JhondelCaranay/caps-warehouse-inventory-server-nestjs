@@ -9,64 +9,78 @@ async function main() {
     const hash = await argon.hash("Dev123");
 
     const super_admin = await prisma.user.upsert({
-        where: { email: "dev1@gmail.com" },
+        where: { email: "superadmin@gmail.com" },
         update: {},
         create: {
-            email: "dev1@gmail.com",
+            email: "superadmin@gmail.com",
             hash: hash,
             role: "SUPER_ADMIN",
+            isNeedChangePassword: false,
             Profile: {
                 create: {
-                    first_name: "Jhondel",
-                    last_name: "Caranay",
+                    first_name: "John Joseph",
+                    last_name: "Tiangco",
+                    position: "Admin Officer",
+                    avatarUrl:
+                        "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fjohn.jfif?alt=media&token=9472a17d-1f7b-48a0-b906-a0b52c2ee617",
                 },
             },
         },
     });
 
     const admin = await prisma.user.upsert({
-        where: { email: "dev2@gmail.com" },
+        where: { email: "admin1@gmail.com" },
         update: {},
         create: {
-            email: "dev2@gmail.com",
+            email: "admin1@gmail.com",
             hash: hash,
             role: "ADMIN",
+            isNeedChangePassword: false,
             Profile: {
                 create: {
-                    first_name: faker.name.firstName(),
-                    last_name: faker.name.lastName(),
+                    first_name: "Cary",
+                    last_name: "Bondoc",
+                    position: "IT Consultant",
+                    avatarUrl:
+                        "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fc11915c53031586c2cbcf02fb32df041.png?alt=media&token=47537157-4914-4caf-a295-cf888c293c49",
                 },
             },
         },
     });
 
     const controller = await prisma.user.upsert({
-        where: { email: "dev3@gmail.com" },
+        where: { email: "controller1@gmail.com" },
         update: {},
         create: {
-            email: "dev3@gmail.com",
+            email: "controller1@gmail.com",
             hash: hash,
             role: "WAREHOUSE_CONTROLLER",
+            isNeedChangePassword: false,
             Profile: {
                 create: {
-                    first_name: faker.name.firstName(),
-                    last_name: faker.name.lastName(),
+                    first_name: "Victor",
+                    last_name: "Mabazza",
+                    position: "Materials Controller",
                 },
             },
         },
     });
 
     const engineer = await prisma.user.upsert({
-        where: { email: "dev4@gmail.com" },
+        where: { email: "engineer1@gmail.com" },
         update: {},
         create: {
-            email: "dev4@gmail.com",
+            email: "engineer1@gmail.com",
             hash: hash,
             role: "ENGINEER",
+            isNeedChangePassword: false,
             Profile: {
                 create: {
-                    first_name: faker.name.firstName(),
-                    last_name: faker.name.lastName(),
+                    first_name: "Jabez",
+                    last_name: "Bondoc",
+                    position: "Project Supervisor",
+                    avatarUrl:
+                        "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2F1.jfif?alt=media&token=862e7ccc-b392-4b18-b0f6-3f0a83b85607",
                 },
             },
         },
@@ -74,15 +88,15 @@ async function main() {
     // create Projects
     const project1 = await prisma.project.create({
         data: {
-            name: "Shell Gas Station Project",
-            address: "MacArthur Highway, Angeles City, Pampanga",
+            name: "NTI Shell Acienda 2021",
+            address: "Silang, Cavite",
             userId: engineer.id,
         },
     });
     const project2 = await prisma.project.create({
         data: {
-            name: "SM City Clark Project",
-            address: "MacArthur Highway, Angeles City, Pampanga",
+            name: "NTI Shell Mahogany 2021",
+            address: "Silang, Cavite",
             userId: engineer.id,
         },
     });
@@ -231,6 +245,8 @@ async function main() {
                 price: 250000,
                 brandId: brand11.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fbuldozer.jpg?alt=media&token=86ba05f8-c3ae-4335-ae4e-4fd1d954ee19",
             },
             {
                 name: "Excavator",
@@ -242,6 +258,8 @@ async function main() {
                 price: 350000,
                 brandId: brand12.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fexcavator.jpg?alt=media&token=d52b9b8a-c10b-4998-abf6-416df97bb39f",
             },
             {
                 name: "Backhoe",
@@ -253,6 +271,8 @@ async function main() {
                 price: 120000,
                 brandId: brand1.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fbackhoe.jpg?alt=media&token=32cd3562-8b7d-48a7-9d92-2e32bf2fe2d3",
             },
             {
                 name: "Loader",
@@ -264,6 +284,8 @@ async function main() {
                 price: 150000,
                 brandId: brand13.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Floader.jpg?alt=media&token=76d17c22-9f46-4618-814f-018a58eccc8c",
             },
             {
                 name: "Grader",
@@ -275,6 +297,8 @@ async function main() {
                 price: 280000,
                 brandId: brand2.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fgrader.jpg?alt=media&token=00e473e7-a56d-40d6-8087-f5b11ee1642e",
             },
             {
                 name: "Skid Steer Loader",
@@ -286,6 +310,8 @@ async function main() {
                 price: 80000,
                 brandId: brand3.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fskid.jpg?alt=media&token=50102249-0f96-4991-8c8f-dadcaca0e259",
             },
             {
                 name: "Concrete Mixer",
@@ -297,6 +323,8 @@ async function main() {
                 price: 15000,
                 brandId: brand4.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2FTilting-drum-concrete-mixer.jpg?alt=media&token=62ad2d56-9889-4cef-887a-739ce1024172",
             },
             {
                 name: "Concrete Pump",
@@ -308,6 +336,8 @@ async function main() {
                 price: 250000,
                 brandId: brand5.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fconcretepump.jpg?alt=media&token=a4cc3d70-e72e-4149-9dfb-fc0725c58c1e",
             },
             {
                 name: "Concrete Vibrator",
@@ -319,6 +349,8 @@ async function main() {
                 price: 1500,
                 brandId: brand5.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fconcretevibrator.jpg?alt=media&token=f2bf60f3-4cd4-40da-9b9f-b23eb2acbb74",
             },
             {
                 name: "Jackhammer",
@@ -341,6 +373,8 @@ async function main() {
                 price: 800,
                 brandId: brand15.id,
                 categoryId: category1.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Faircompppressor.jpg?alt=media&token=afc4e479-415b-41bf-bead-0d54f94809a5",
             },
             {
                 name: "Pneumatic Drill",
@@ -352,6 +386,8 @@ async function main() {
                 price: 500,
                 brandId: brand15.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fpdrill.jpeg?alt=media&token=8629add2-ab9e-4a03-8056-7606f8ed3cbb",
             },
             {
                 name: "Hammer Drill",
@@ -362,6 +398,8 @@ async function main() {
                 price: 120,
                 brandId: brand5.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fhdrill.jpeg?alt=media&token=430fd24a-76f0-4651-b84a-c6434692ccfe",
             },
             {
                 name: "Circular Saw",
@@ -370,8 +408,10 @@ async function main() {
                 unit: "PCS",
                 quantity: 40,
                 price: 150,
-                brandId: brand5.id,
+                brandId: brand10.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fcirsaw.png?alt=media&token=b72687ca-a148-4e4f-a7fa-35c632601f77",
             },
             {
                 name: "Table Saw",
@@ -390,7 +430,7 @@ async function main() {
                 unit: "PCS",
                 quantity: 40,
                 price: 250,
-                brandId: brand5.id,
+                brandId: brand10.id,
                 categoryId: category2.id,
             },
             {
@@ -400,8 +440,10 @@ async function main() {
                 unit: "PCS",
                 quantity: 40,
                 price: 350,
-                brandId: brand7.id,
+                brandId: brand10.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fchoppsaw.png?alt=media&token=59d1fd04-ae13-4d1e-a39e-2665bd9c6601",
             },
             {
                 name: "Jigsaw",
@@ -410,8 +452,10 @@ async function main() {
                 unit: "PCS",
                 quantity: 40,
                 price: 100,
-                brandId: brand9.id,
+                brandId: brand10.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fjigsaw.png?alt=media&token=f4e616cb-b387-4c21-9d66-744071215411",
             },
             {
                 name: "Reciprocating Saw",
@@ -422,6 +466,8 @@ async function main() {
                 price: 200,
                 brandId: brand10.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Frecsaw.png?alt=media&token=711bfa7f-25a7-48f3-bf02-f4ea0d0dbcf2",
             },
             {
                 name: "Drill Press",
@@ -442,6 +488,8 @@ async function main() {
                 price: 400,
                 brandId: brand5.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fbandsaw.jfif?alt=media&token=d758fbc8-7e95-4477-a561-a7670acc8273",
             },
             {
                 name: "Belt Sander",

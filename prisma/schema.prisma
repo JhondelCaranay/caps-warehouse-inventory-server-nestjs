@@ -60,6 +60,9 @@ model User {
 
   isNeedChangePassword Boolean @default(true)
 
+  resetPasswordToken String?
+  resetPasswordExp   DateTime?
+
   // relations
 
   Profile   Profile   @relation(fields: [profileId], references: [id])

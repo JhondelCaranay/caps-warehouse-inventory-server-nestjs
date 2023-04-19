@@ -254,11 +254,11 @@ export class TransactionService {
                 data: {
                     status: dto.status || TRANSACTION_STATUS.CONFIRMED_RECEIVED,
                     remarks: dto.remarks,
-                    Sender: {
-                        connect: {
-                            id: userId,
-                        },
-                    },
+                    // Sender: {
+                    //     connect: {
+                    //         id: userId,
+                    //     },
+                    // },
                 },
             });
 
@@ -280,11 +280,11 @@ export class TransactionService {
                     status: dto.status || TRANSACTION_STATUS.ON_RETURN,
                     remarks: dto.remarks,
                     return_slip_num: return_slip_num,
-                    Sender: {
-                        connect: {
-                            id: userId,
-                        },
-                    },
+                    // Sender: {
+                    //     connect: {
+                    //         id: userId,
+                    //     },
+                    // },
                 },
             });
 
@@ -299,11 +299,11 @@ export class TransactionService {
                 data: {
                     status: dto.status || TRANSACTION_STATUS.CONFIRMED_RETURNED,
                     remarks: dto.remarks,
-                    Sender: {
-                        connect: {
-                            id: userId,
-                        },
-                    },
+                    // Sender: {
+                    //     connect: {
+                    //         id: userId,
+                    //     },
+                    // },
                 },
             });
 
