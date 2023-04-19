@@ -1,10 +1,13 @@
+import { NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthDto, SignupDto } from "./dto";
+import { AuthDto, ForgotPasswordDto, ResetCodeDto, SignupDto } from "./dto";
 import { JwtService } from "@nestjs/jwt";
 import { ForbiddenException } from "@nestjs/common/exceptions";
 import { Tokens } from "./types";
 import { Injectable } from "@nestjs/common/decorators";
 import * as argon from "argon2";
+import { sendToEmail } from "src/common/utils/sendToEmail";
+import { codeGenerator } from "src/common/utils";
 
 @Injectable()
 export class AuthService {
@@ -150,6 +153,109 @@ export class AuthService {
             where: { id: userId },
             data: { hashRT: hash },
         });
+    }
+
+    async forgotPassword(dto: ForgotPasswordDto) {
+        const user = await this.prisma.user.findUnique({
+            where: { email: dto.email },
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                email: true,
+                status: true,
+                role: true,
+                profileId: true,
+                Profile: true,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException(`Email ${dto.email} not found`);
+        }
+
+        // make a temporary password
+        const generateCode = codeGenerator(6);
+        const resetPasswordToken = await argon.hash(generateCode);
+
+        // expire in 5 minutes
+        const expires = new Date();
+        expires.setMinutes(expires.getMinutes() + 5);
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+                resetPasswordToken: resetPasswordToken,
+                resetPasswordExp: expires,
+            },
+        });
+
+        await sendToEmail({
+            email: user.email,
+            subject: "Forgot Password",
+            text: "Forgot Password",
+            html: `
+            <div style="background-color: #f5f5f5; padding: 20px;">
+                <div style="background-color: #fff; padding: 20px; border-radius: 5px;">
+                    <div style="text-align: center;">
+                        <img src="https://ph.joblum.com/uploads/22/21338.jpg" alt="logo" border="0" style="width: 100px; height: 100px;">
+                    </div>
+                    <h3 style="text-align: center; margin: 0px;">Use this reset code to confirm your account.</h3>
+                    <p style="text-align: center;">Code: <b>${generateCode}</b>. <br />Expires in ${expires.toLocaleTimeString()}.</p>
+                </div>
+            </div>
+            `,
+        });
+
+        return user;
+    }
+
+    async resetCode(dto: ResetCodeDto) {
+        // dto contains code and email
+        const user = await this.prisma.user.findUnique({
+            where: { email: dto.email },
+        });
+
+        if (!user) {
+            throw new NotFoundException(`Email ${dto.email} not found`);
+        }
+
+        // check if code is valid
+        const codeMatch = await argon.verify(user.resetPasswordToken, dto.code);
+
+        if (!codeMatch) {
+            throw new ForbiddenException("Invalid code");
+        }
+
+        // check if code is expired
+        const now = new Date();
+        const isExpired = now > user.resetPasswordExp;
+
+        console.log(isExpired);
+
+        if (isExpired) {
+            throw new ForbiddenException("Code expired");
+        }
+
+        // user need to reset password
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+                isNeedChangePassword: true,
+            },
+        });
+
+        // gennerate tokens
+        const access_token = this.getAccessToken(user.id, user.email, user.role);
+        const refresh_token = this.getRefreshToken(user.id, user.email);
+
+        // update user hashed refresh token
+        await this.updateHashRt(user.id, refresh_token);
+
+        return {
+            access_token,
+            refresh_token,
+        };
     }
 
     // async hashData(data: string) {

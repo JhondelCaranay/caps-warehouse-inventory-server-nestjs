@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, HttpCode, UseGuards, HttpStatus } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthDto, SignupDto } from "./dto";
+import { AuthDto, ForgotPasswordDto, ResetCodeDto, SignupDto } from "./dto";
 import { Tokens } from "./types";
 import { RtGuard } from "src/common/guards";
 import { GetCurrentUser, GetCurrentUserId, Public } from "src/common/decorators";
@@ -44,6 +44,22 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     me() {
         return this.authService.me();
+    }
+
+    @Public()
+    @Post("forgot-password")
+    @HttpCode(HttpStatus.CREATED)
+    forgotPassword(@Body() dto: ForgotPasswordDto) {
+        console.log(dto, "running forgot password");
+        return this.authService.forgotPassword(dto);
+    }
+
+    @Public()
+    @Post("reset-code")
+    @HttpCode(HttpStatus.CREATED)
+    resetCode(@Body() dto: ResetCodeDto) {
+        console.log(dto, "running reset code");
+        return this.authService.resetCode(dto);
     }
 
     // @UseGuards(AuthGuard("jwt"))
