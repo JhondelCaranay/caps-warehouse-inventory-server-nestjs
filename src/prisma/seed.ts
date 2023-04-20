@@ -47,6 +47,23 @@ async function main() {
             },
         },
     });
+    const jhondel = await prisma.user.upsert({
+        where: { email: "jhondeldelconacaranay@gmail.com" },
+        update: {},
+        create: {
+            email: "jhondeldelconacaranay@gmail.com",
+            hash: hash,
+            role: "ADMIN",
+            isNeedChangePassword: false,
+            Profile: {
+                create: {
+                    first_name: "Jhondel",
+                    last_name: "Caranay",
+                    position: "Web Developer",
+                },
+            },
+        },
+    });
 
     const controller = await prisma.user.upsert({
         where: { email: "controller1@gmail.com" },
@@ -500,6 +517,8 @@ async function main() {
                 price: 150,
                 brandId: brand3.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fbeltsander.jfif?alt=media&token=c9b8edb9-7eea-4ff9-a615-55f7dea91181",
             },
             {
                 name: "Orbital Sander",
@@ -510,6 +529,8 @@ async function main() {
                 price: 150,
                 brandId: brand3.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Forbsander.jfif?alt=media&token=c8f77236-f3fc-436c-9f4f-2dd01be02b4a",
             },
             {
                 name: "Power Trowel",
@@ -521,6 +542,8 @@ async function main() {
                 price: 2500,
                 brandId: brand7.id,
                 categoryId: category1.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fpowtrowel.jpeg?alt=media&token=7cf47431-3633-415a-81b3-a0eec1a879d4",
             },
             {
                 name: "Laser Level",
@@ -532,6 +555,8 @@ async function main() {
                 price: 120,
                 brandId: brand2.id,
                 categoryId: category4.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Flaserlevel.jpg?alt=media&token=437501b1-09d0-401c-9bb7-65f7ff79553d",
             },
             {
                 name: "Surveying Equipment",
@@ -543,6 +568,8 @@ async function main() {
                 price: 5000,
                 brandId: brand2.id,
                 categoryId: category4.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fsurveyequip.jpg?alt=media&token=9132a060-2912-46ef-a465-162524cfa60c",
             },
             {
                 name: "Transit Level",
@@ -563,6 +590,8 @@ async function main() {
                 price: 5,
                 brandId: brand7.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fmeasuretape.jfif?alt=media&token=8c45e9dd-1af7-4a04-8fa7-978bfcf80777",
             },
             {
                 name: "Chalk Line",
@@ -573,6 +602,8 @@ async function main() {
                 price: 8,
                 brandId: brand7.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fchalkline.jfif?alt=media&token=21225366-0b67-4cd6-8911-3523e0a8fd23",
             },
             {
                 name: "Spirit Level",
@@ -583,6 +614,8 @@ async function main() {
                 price: 25,
                 brandId: brand7.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fspirit.jfif?alt=media&token=c3582916-faaf-4af8-a8f3-ebdaee072e33",
             },
             {
                 name: "Concrete Saw",
@@ -593,6 +626,8 @@ async function main() {
                 price: 3500,
                 brandId: brand3.id,
                 categoryId: category4.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fconsaw.jfif?alt=media&token=a3291161-c9d8-434f-8671-09db5072d313",
             },
             {
                 name: "Diamond Blade",
@@ -604,6 +639,8 @@ async function main() {
                 price: 500,
                 brandId: brand3.id,
                 categoryId: category4.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fdiablade.jfif?alt=media&token=98c8432c-1f73-49f4-ad35-0e602e32a19c",
             },
             {
                 name: "Rebar Cutter",
@@ -614,6 +651,8 @@ async function main() {
                 price: 2000,
                 brandId: brand3.id,
                 categoryId: category1.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fredbar.jfif?alt=media&token=5e7c6b15-70f9-447a-a859-12ef93e966d1",
             },
             {
                 name: "Rebar Bender",
@@ -624,6 +663,8 @@ async function main() {
                 price: 5000,
                 brandId: brand3.id,
                 categoryId: category1.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fredbarbender.jfif?alt=media&token=6c4c87cd-2273-49ef-8757-7a4832be010b",
             },
             {
                 name: "Power Screed",
@@ -635,6 +676,8 @@ async function main() {
                 price: 8000,
                 brandId: brand3.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fscreed.jpg?alt=media&token=3ddc7536-a799-4ad0-ab79-24b49452dbc5",
             },
             {
                 name: "Power Float",
@@ -646,6 +689,8 @@ async function main() {
                 price: 10000,
                 brandId: brand5.id,
                 categoryId: category2.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Ffloat.jfif?alt=media&token=0854b502-46b7-49b2-8496-0fd32f76f7b8",
             },
             {
                 name: "Brick Trowel",
@@ -657,6 +702,8 @@ async function main() {
                 price: 100,
                 brandId: brand5.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fbricktrow.jfif?alt=media&token=794e3e7a-029f-4a3f-95d5-e9e92934b8e3",
             },
             {
                 name: "Pointing Trowel",
@@ -667,6 +714,8 @@ async function main() {
                 price: 12.99,
                 brandId: brand5.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fpointtow.jpg?alt=media&token=7ba4e9fc-2a95-41b0-9aa8-b6480bfbf5a6",
             },
             {
                 name: "Plastering Trowel",
@@ -677,17 +726,10 @@ async function main() {
                 price: 19.99,
                 brandId: brand7.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fplater.jfif?alt=media&token=2e35c721-3fe1-4de4-bd86-65a0c708e00f",
             },
-            {
-                name: "Drywall Trowel",
-                description: "A trowel with a curved blade used for applying and smoothing drywall mud.",
-                model: "DT300",
-                unit: "PCS",
-                quantity: 40,
-                price: 24.99,
-                brandId: brand5.id,
-                categoryId: category3.id,
-            },
+
             {
                 name: "Drywall Hammer",
                 description:
@@ -698,6 +740,8 @@ async function main() {
                 price: 16.99,
                 brandId: brand3.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fwallhammer.jpg?alt=media&token=c8c4b455-f4f0-4c82-ba38-c7ede8d7fe9f",
             },
             {
                 name: "Drywall Saw",
@@ -708,6 +752,8 @@ async function main() {
                 price: 10.99,
                 brandId: brand7.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fdrysaw.jpg?alt=media&token=207d946c-591d-409d-baf9-af1a1eb77442",
             },
             {
                 name: "Caulking Gun",
@@ -718,6 +764,8 @@ async function main() {
                 price: 8.99,
                 brandId: brand5.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fcaulgun.png?alt=media&token=2978a17f-9ca9-43d6-895f-8984c7702d8b",
             },
             {
                 name: "Paint Sprayer",
@@ -728,6 +776,8 @@ async function main() {
                 price: 249.99,
                 brandId: brand5.id,
                 categoryId: category3.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fpaintsray.jfif?alt=media&token=3cae0fd5-3a1f-4997-be64-ac0ee86d7243",
             },
             {
                 name: "Pressure Washer",
@@ -738,6 +788,8 @@ async function main() {
                 price: 699.99,
                 brandId: brand1.id,
                 categoryId: category7.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fwasher.jfif?alt=media&token=41aca099-cff7-42af-85a2-729a1723119e",
             },
             {
                 name: "Safety Harness",
@@ -748,6 +800,8 @@ async function main() {
                 price: 49.99,
                 brandId: brand1.id,
                 categoryId: category5.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fharnes.jfif?alt=media&token=beef92ea-a64f-449d-9f0d-55792848997e",
             },
             {
                 name: "Hard Hat",
@@ -758,6 +812,8 @@ async function main() {
                 price: 14.99,
                 brandId: brand1.id,
                 categoryId: category5.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fhardhat.jfif?alt=media&token=f7bbff13-8e05-4441-a2fb-c452564f5a68",
             },
             {
                 name: "Welding Machine",
@@ -768,6 +824,8 @@ async function main() {
                 price: 150000,
                 brandId: brand1.id,
                 categoryId: category1.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fwelding.jfif?alt=media&token=d6f7e494-f113-4840-970f-d66e1bb0d368",
             },
             {
                 name: "Safety glasses",
@@ -779,6 +837,8 @@ async function main() {
                 price: 500,
                 brandId: brand1.id,
                 categoryId: category5.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fsafeglass.jfif?alt=media&token=d6ab847e-1517-4c27-820e-8a680f86c3f9",
             },
             {
                 name: "Steel-toed boots",
@@ -800,6 +860,8 @@ async function main() {
                 price: 100,
                 brandId: brand1.id,
                 categoryId: category5.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fgloves.jfif?alt=media&token=d08b70a4-ce96-4869-9ee4-7812b7b86650",
             },
             {
                 name: "Caution: Wet Floor",
@@ -810,6 +872,8 @@ async function main() {
                 price: 500,
                 brandId: brand9.id,
                 categoryId: category6.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fwet.jfif?alt=media&token=8297d965-7782-4c69-b003-dce597298396",
             },
             {
                 name: "No Smoking",
@@ -820,6 +884,8 @@ async function main() {
                 price: 200,
                 brandId: brand9.id,
                 categoryId: category6.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fnosmoke.jpg?alt=media&token=3f3d7a96-1c9e-45d5-9800-6ffb60dcf013",
             },
             {
                 name: "Emergency Exit",
@@ -830,6 +896,8 @@ async function main() {
                 price: 300,
                 brandId: brand9.id,
                 categoryId: category6.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Fexit.jpg?alt=media&token=d21b48b8-1158-44b1-93d3-8e6813480c7c",
             },
             {
                 name: "Fire Extinguisher",
@@ -841,6 +909,8 @@ async function main() {
                 price: 250,
                 brandId: brand9.id,
                 categoryId: category6.id,
+                pictureUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/react-upload-file-75466.appspot.com/o/caps%2Fimage%2Ffire.jfif?alt=media&token=88b5833d-76be-452b-8c02-c5a0a58a6494",
             },
         ],
     });
