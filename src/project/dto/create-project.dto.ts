@@ -5,9 +5,9 @@ export class CreateProjectDto {
     @IsNotEmpty()
     @IsString()
     // only characters and whitespace regex
-    @Matches(/^[a-zA-Z\s]+$/, {
-        message: "name can only contain characters and whitespace",
-    })
+    // @Matches(/^[a-zA-Z\s]+$/, {
+    //     message: "name can only contain characters and whitespace",
+    // })
     name: string;
 
     @IsNotEmpty()
