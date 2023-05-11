@@ -11,8 +11,12 @@ export class ItemService {
 
     async create(dto: CreateItemDto) {
         // check duplicate
-        const duplicate = await this.itemModel.findOneByName(dto.name);
-        if (duplicate) throw new BadRequestException(`Item name already exists!`);
+        // const duplicate = await this.itemModel.findOneByName(dto.name);
+        // if (duplicate) throw new BadRequestException(`Item name already exists!`);
+
+        // check if referal category exists, throw a 404 error if not found
+        const duplicate = await this.itemModel.findOneReferralId(dto.referalId);
+        if (duplicate) throw new BadRequestException(`Item with referral code ${dto.referalId} already exists!`);
 
         // check if category exists, throw a 404 error if not found
         const isCategoryExist = await this.categoryModel.findOne(dto.categoryId);

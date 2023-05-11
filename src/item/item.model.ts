@@ -72,6 +72,17 @@ export class ItemModel {
             },
         });
     }
+    async findOneReferralId(referralId: string) {
+        return await this.prisma.item.findUnique({
+            where: {
+                referalId: referralId,
+            },
+            include: {
+                Category: true,
+                Brand: true,
+            },
+        });
+    }
 
     async update(id: string, dto: UpdateItemDto) {
         return await this.prisma.item.update({
