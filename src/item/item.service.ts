@@ -26,8 +26,8 @@ export class ItemService {
         return newItem;
     }
 
-    async findAll(name: string, category: string, skip: number, take: number) {
-        const items = await this.itemModel.findAll(name, category, skip, take);
+    async findAll(name: string, category: string, status: string, skip: number, take: number) {
+        const items = await this.itemModel.findAll(name, category, status, skip, take);
         return items;
     }
 

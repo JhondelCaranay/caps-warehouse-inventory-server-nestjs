@@ -7,6 +7,10 @@ export class CreateItemDto {
     @IsString()
     name: string;
 
+    @IsNotEmpty()
+    @IsString()
+    referalId: string;
+
     @IsOptional()
     @IsString()
     description: string;

@@ -29,6 +29,12 @@ export class TransactionController {
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
+    @Get("item/:itemId")
+    findAllByItemId(@Param("itemId") itemId: string) {
+        return this.transactionService.findAllByItemId(itemId);
+    }
+
+    @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
     @Get("my-transaction")
     findAllMyTransaction(@GetCurrentUserId() userId: string) {
         return this.transactionService.findAllMyTransaction(userId);
