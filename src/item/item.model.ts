@@ -1,6 +1,7 @@
 import { PrismaService } from "./../prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { CreateItemDto, UpdateItemDto } from "./dto";
+import { ITEM_STATUS } from "@prisma/client";
 
 @Injectable()
 export class ItemModel {
@@ -10,6 +11,7 @@ export class ItemModel {
         return await this.prisma.item.create({
             data: {
                 name: dto.name,
+                referalId: dto.referalId,
                 description: dto.description || undefined,
                 model: dto.model || undefined,
                 unit: dto.unit,
@@ -26,7 +28,7 @@ export class ItemModel {
         });
     }
 
-    async findAll(name: string, category: string, skip: number, take: number) {
+    async findAll(name: string, category: string, status: string, skip: number, take: number) {
         return await this.prisma.item.findMany({
             take: take || undefined,
             skip: skip * take || undefined,
@@ -39,6 +41,7 @@ export class ItemModel {
                         contains: category || undefined,
                     },
                 },
+                status: status ? ITEM_STATUS[status.toLocaleUpperCase()] : undefined,
             },
             include: {
                 Category: true,
@@ -59,7 +62,7 @@ export class ItemModel {
     }
 
     async findOneByName(name: string) {
-        return await this.prisma.item.findUnique({
+        return await this.prisma.item.findFirst({
             where: {
                 name: name,
             },

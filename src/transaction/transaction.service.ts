@@ -5,7 +5,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateTransactionDto, UpdateTransactionDto, UpdateTransactionStatusDto } from "./dto";
 import { TransactionModel } from "./transaction.model";
 import { PrismaService } from "src/prisma/prisma.service";
-import { TRANSACTION_STATUS } from "@prisma/client";
+import { ITEM_STATUS, TRANSACTION_STATUS } from "@prisma/client";
 import { format } from "date-fns";
 @Injectable()
 export class TransactionService {
@@ -100,6 +100,54 @@ export class TransactionService {
             orderBy: {
                 createdAt: "desc",
             },
+            take: 15,
+        });
+        return transactions;
+    }
+
+    async findAllByItemId(itemId: string) {
+        // get transaction by item id
+        const transactions = await this.prisma.transaction.findMany({
+            where: {
+                itemId: itemId,
+            },
+            include: {
+                Item: {
+                    include: {
+                        Category: true,
+                        Brand: true,
+                    },
+                },
+                Project: true,
+                Sender: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
+                Receiver: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        email: true,
+                        status: true,
+                        role: true,
+                        profileId: true,
+                        Profile: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+            take: 15,
         });
         return transactions;
     }
@@ -240,6 +288,7 @@ export class TransactionService {
                 },
                 data: {
                     quantity: item.quantity - transaction.quantity,
+                    status: ITEM_STATUS.BORROWED,
                 },
             });
 
@@ -314,6 +363,7 @@ export class TransactionService {
                 },
                 data: {
                     quantity: item.quantity + transaction.quantity,
+                    status: ITEM_STATUS.AVAILABLE,
                 },
             });
             return updatedTransaction;

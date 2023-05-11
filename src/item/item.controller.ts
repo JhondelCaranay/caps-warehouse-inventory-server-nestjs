@@ -19,6 +19,7 @@ export class ItemController {
     findAll(
         @Query("name") name: string,
         @Query("category") category: string,
+        @Query("status") status: string,
         @Query("page") skip: number,
         @Query("limit") take: number,
     ) {
@@ -28,7 +29,7 @@ export class ItemController {
         console.log("limit: ", take, typeof take);
         console.log("newwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
 
-        return this.itemService.findAll(name, category, skip, take);
+        return this.itemService.findAll(name, category, status, skip, take);
     }
 
     @Roles(ROLE.SUPER_ADMIN, ROLE.ADMIN, ROLE.WAREHOUSE_CONTROLLER, ROLE.ENGINEER)
