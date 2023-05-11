@@ -39,12 +39,16 @@ enum PROJECT_STATUS {
   CANCELLED
 }
 
+enum ITEM_STATUS {
+  AVAILABLE
+  BORROWED
+  DEFECTIVE
+}
+
 // value lowercase
 enum UNIT {
   UNIT
   PCS
-  SETS
-  ROLL
 }
 
 model User {
@@ -147,11 +151,14 @@ model Item {
   name        String  @unique
   description String?
   model       String?
-  unit        UNIT    @default(UNIT)
-  // stock       STOCK   @default(OUT_OF_STOCK)
-  quantity    Int     @default(0)
-  price       Float   @default(0)
-  pictureUrl  String? @db.VarChar(255)
+  referalId   String  @unique
+
+  status ITEM_STATUS @default(AVAILABLE)
+  unit   UNIT        @default(UNIT)
+
+  quantity   Int     @default(1)
+  price      Float   @default(0)
+  pictureUrl String? @db.VarChar(255)
 
   // relations
   Transaction Transaction[]
@@ -163,6 +170,18 @@ model Item {
 
   @@map("items")
 }
+
+// model SingleItem {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   referalId String      @unique
+//   status    ITEM_STATUS @default(AVAILABLE)
+
+//   Item   Item?   @relation(fields: [itemId], references: [id])
+//   itemId String?
+// }
 
 model Category {
   id        String   @id @default(uuid())
